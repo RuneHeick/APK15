@@ -1,0 +1,13 @@
+
+
+
+Risikabelt at have ting i den som ikke er på heapen. 
+
+Altid farligt ikke at have "new" og "delete" i samme scope. 
+
+Du kan komme til at dealokere null, mange gange. 
+
+evt. en smart pointer løsning. 
+
+evt lave at template allokere på heapen. 
+

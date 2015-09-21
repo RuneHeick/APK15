@@ -9,7 +9,6 @@
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/transition.hpp>
 #include <boost/statechart/custom_reaction.hpp>
-#include <boost/statechart/deep_history.hpp>
 #include <boost/statechart/shallow_history.hpp>
 
 /**

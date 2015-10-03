@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <memory>
 #include "clientInfo.h"
 
 class Room {

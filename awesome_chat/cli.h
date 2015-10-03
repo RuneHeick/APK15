@@ -23,9 +23,9 @@ public:
     void writeLogMsg(const std::string) const;
     void writeChatMsg(const std::string, const std::string) const;
     
-    const std::string LOGTYPE_INFO = "INFO";
-    const std::string LOGTYPE_WARNING = "WARNING";
-    const std::string LOGTYPE_ERROR = "ERROR";
+    static const std::string LOGTYPE_INFO = "INFO";
+    static const std::string LOGTYPE_WARNING = "WARNING";
+    static const std::string LOGTYPE_ERROR = "ERROR";
 private:
     
 };

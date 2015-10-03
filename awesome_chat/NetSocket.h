@@ -14,7 +14,6 @@
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include "RawPacket.h"
-#include <boost/asio/buffer.hpp">
 
 namespace bip = boost::asio::ip;
 

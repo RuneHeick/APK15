@@ -30,4 +30,6 @@ private:
     
 };
 
+extern Cli cli;
+
 #endif

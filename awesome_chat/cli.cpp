@@ -16,6 +16,8 @@
 //namespace greg = boost::gregorian;
 namespace pt = boost::posix_time;
 
+Cli cli;
+
 Cli::Cli()
 {
     

@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
+#include "clientInfo.h"
 
 class Room {
     
@@ -18,8 +20,12 @@ public:
     Room(std::string name);
     ~Room();
     std::string getName();
+    void broadcastMsg(std::string);
+    void addClient(std::shared_ptr<ClientInfo>);
+    void removeClient(std::shared_ptr<ClientInfo>);
 private:
     std::string name_;
+    std::vector<std::shared_ptr< ClientInfo > > clients_;
 };
 
 #endif /* defined(__ac__room__) */

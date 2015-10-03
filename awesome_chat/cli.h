@@ -17,7 +17,7 @@ public:
     Cli();
     ~Cli();
     
-    std::string getUserInput();
+    static std::string getUserInput();
     
     static void writeDebugMsg(const std::string, const std::string);
     static void writeLogMsg(const std::string);

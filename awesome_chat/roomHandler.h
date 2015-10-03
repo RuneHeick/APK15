@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <memory>
 #include "room.h"
 #include "clientInfo.h"
 
@@ -21,10 +22,13 @@ public:
     std::shared_ptr<Room> getRoom(std::string roomName);
     void moveClient(std::shared_ptr<ClientInfo>, std::string, std::string);
     void printAllRooms();
+    
 private:
-    std::shared_ptr<Room> createNewRoom(std::string roomName);
     void addRoom(std::shared_ptr<Room>);
     void deleteRoom(std::string);
+    
+    
+    std::shared_ptr<Room> createNewRoom(std::string roomName);
     
     std::vector< std::shared_ptr< Room >> rooms_;
 };

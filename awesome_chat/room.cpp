@@ -23,3 +23,7 @@ std::string Room::getName()
     return name_;
 }
 
+void Room::broadcastMsg(std::string)
+{
+    
+}

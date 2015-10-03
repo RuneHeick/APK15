@@ -22,5 +22,7 @@ int main(){
 //    sm.process_event(state::EvClientConnect());
 //    sm.process_event(state::EvClientEnterRoom());
 //    sm.process_event(state::EvClientLeaveRoom());
+
+	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, ">> main exit <<");
 }
 

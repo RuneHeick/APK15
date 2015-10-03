@@ -16,7 +16,9 @@
 //namespace greg = boost::gregorian;
 namespace pt = boost::posix_time;
 
-Cli cli;
+const std::string Cli::LOGTYPE_INFO = "INFO";
+const std::string Cli::LOGTYPE_WARNING = "WARNING";
+const std::string Cli::LOGTYPE_ERROR = "ERROR";
 
 Cli::Cli()
 {
@@ -36,17 +38,17 @@ std::string Cli::getUserInput()
     return temp;
 }
 
-void Cli::writeDebugMsg(const std::string logtype,const std::string msg) const
+void Cli::writeDebugMsg(const std::string logtype,const std::string msg)
 {
     std::cout << pt::second_clock::local_time().time_of_day() << " [" <<logtype << "]: " << msg << std::endl;
 }
 
-void Cli::writeLogMsg(const std::string msg) const
+void Cli::writeLogMsg(const std::string msg)
 {
     
 }
 
-void Cli::writeChatMsg(const std::string name, const std::string msg) const
+void Cli::writeChatMsg(const std::string name, const std::string msg)
 {
     std::cout << pt::second_clock::local_time().time_of_day() << " [" << name << "]: " << msg << std::endl;
 }

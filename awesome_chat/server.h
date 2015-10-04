@@ -11,4 +11,4 @@ public:
 	void SetPort(uint16_t port);
 };
 
-#endif /* SERVER1_H_ */
+#endif /* SERVER_H_ */

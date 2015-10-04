@@ -15,6 +15,7 @@
 
 #include "cli.h"
 #include "server.h"
+#include "client.h"
 
 namespace state
 {
@@ -81,6 +82,8 @@ struct StateClient : sc::simple_state<StateClient, ChatStateMachine, StateClient
 {
 	StateClient() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClient."); }
 	~StateClient() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClient."); }
+
+	client chatClient;
 };
 
 struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient, StateLobby>
@@ -90,10 +93,10 @@ struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient
 	~StateClientConnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClientConnected."); }
 };
 
-struct StateClientDisconnected : sc::simple_state<StateClientDisconnected, StateClient>
+struct StateClientDisconnected : sc::state<StateClientDisconnected, StateClient>
 {
 	typedef sc::transition<EvClientConnect, StateClientConnected> reactions;
-	StateClientDisconnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClientDisconnected."); }
+	StateClientDisconnected(my_context ctx);
 	~StateClientDisconnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClientDisconnected."); }
 };
 

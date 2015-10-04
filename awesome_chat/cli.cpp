@@ -38,6 +38,33 @@ std::string Cli::getUserInput()
     return temp;
 }
 
+std::string Cli::getUserString(const std::string requestPrint)
+{
+	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, requestPrint);
+    return getUserInput();
+}
+
+/* Request an integer from the user.
+ * If conversion of the input fails an error message is printed.
+ * The exceptions of std::stoi() is rethrown.
+ */
+int Cli::getUserInt(const std::string requestPrint)
+{
+	std::string str = getUserString(requestPrint);
+	int value;
+	try {
+		value = std::stoi(str);
+	} catch(std::out_of_range& e) {
+		Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Input value out of range.");
+		throw;
+	} catch(std::invalid_argument& e) {
+		Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Invalid input - unable to convert to an integer.");
+		throw;
+	}
+
+	return value;
+}
+
 void Cli::writeDebugMsg(const std::string logtype,const std::string msg)
 {
     std::cout << pt::second_clock::local_time().time_of_day() << " [" <<logtype << "]: " << msg << std::endl;

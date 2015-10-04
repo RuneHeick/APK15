@@ -22,10 +22,9 @@ public:
     std::shared_ptr<Room> getRoom(std::string roomName);
     void printAllRooms();
     
-    void deleteRoom(std::string);
 private:
     void addRoom(std::shared_ptr<Room>);
-    
+    void deleteRoom(std::string);
     
     std::shared_ptr<Room> createNewRoom(std::string roomName);
     

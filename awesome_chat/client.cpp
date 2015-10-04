@@ -13,5 +13,5 @@ client::~client() {
 
 void client::Connect(std::string ip, uint16_t port) {
 	// todo implement.
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, std::string("Ip set to: ") + ip + std::string(" and port set to: ") + std::to_string(port) );
+	Cli::writeDebugMsg(std::string("Ip set to: ") + ip + std::string(" and port set to: ") + std::to_string(port) );
 }

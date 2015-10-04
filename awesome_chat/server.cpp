@@ -13,5 +13,5 @@ server::~server() {
 
 void server::SetPort(uint16_t port) {
 	// todo implement.
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, std::string("Port set to: ") + std::to_string(port) );
+	Cli::writeLogMsg(Cli::LOGTYPE_INFO, std::string("Port set to: ") + std::to_string(port) );
 }

@@ -53,13 +53,13 @@ struct StateSelectMode : sc::state<StateSelectMode, ChatStateMachine>
 			sc::transition<EvClientMode, StateClient> >reactions;
 
 	StateSelectMode(my_context ctx);
-	~StateSelectMode() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit SelectMode."); }
+	~StateSelectMode() { Cli::writeDebugMsg("Exit SelectMode."); }
 };
 
 struct StateServer : sc::simple_state<StateServer, ChatStateMachine, StateServerSetup>
 {
-	StateServer() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateServer."); }
-	~StateServer() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateServer."); }
+	StateServer() { Cli::writeDebugMsg("Enter StateServer."); }
+	~StateServer() { Cli::writeDebugMsg("Exit StateServer."); }
 
 	server chatServer;
 };
@@ -67,21 +67,21 @@ struct StateServer : sc::simple_state<StateServer, ChatStateMachine, StateServer
 struct StateServerRunning : sc::simple_state<StateServerRunning, StateServer>
 {
 	typedef sc::transition<EvError, StateServerSetup> reactions;
-	StateServerRunning() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateServerRunning."); }
-	~StateServerRunning() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateServerRunning."); }
+	StateServerRunning() { Cli::writeDebugMsg("Enter StateServerRunning."); }
+	~StateServerRunning() { Cli::writeDebugMsg("Exit StateServerRunning."); }
 };
 
 struct StateServerSetup : sc::state<StateServerSetup, StateServer>
 {
 	typedef sc::transition<EvSetupDone, StateServerRunning> reactions;
 	StateServerSetup(my_context ctx);
-	~StateServerSetup() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateServerSetup."); }
+	~StateServerSetup() { Cli::writeDebugMsg("Exit StateServerSetup."); }
 };
 
 struct StateClient : sc::simple_state<StateClient, ChatStateMachine, StateClientDisconnected>
 {
-	StateClient() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClient."); }
-	~StateClient() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClient."); }
+	StateClient() { Cli::writeDebugMsg("Enter StateClient."); }
+	~StateClient() { Cli::writeDebugMsg("Exit StateClient."); }
 
 	client chatClient;
 };
@@ -89,29 +89,29 @@ struct StateClient : sc::simple_state<StateClient, ChatStateMachine, StateClient
 struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient, StateLobby>
 {
 	typedef sc::transition<EvClientDisconnect, StateClientDisconnected> reactions;
-	StateClientConnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClientConnected."); }
-	~StateClientConnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClientConnected."); }
+	StateClientConnected() { Cli::writeDebugMsg("Enter StateClientConnected."); }
+	~StateClientConnected() { Cli::writeDebugMsg("Exit StateClientConnected."); }
 };
 
 struct StateClientDisconnected : sc::state<StateClientDisconnected, StateClient>
 {
 	typedef sc::transition<EvClientConnect, StateClientConnected> reactions;
 	StateClientDisconnected(my_context ctx);
-	~StateClientDisconnected() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateClientDisconnected."); }
+	~StateClientDisconnected() { Cli::writeDebugMsg("Exit StateClientDisconnected."); }
 };
 
 struct StateRoom : sc::simple_state<StateRoom, StateClientConnected>
 {
 	typedef sc::transition<EvClientLeaveRoom, StateLobby> reactions;
-	StateRoom() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateRoom."); }
-	~StateRoom() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateRoom."); }
+	StateRoom() { Cli::writeDebugMsg("Enter StateRoom."); }
+	~StateRoom() { Cli::writeDebugMsg("Exit StateRoom."); }
 };
 
 struct StateLobby : sc::simple_state<StateLobby, StateClientConnected>
 {
 	typedef sc::transition<EvClientEnterRoom, StateRoom> reactions;
-	StateLobby() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateLobby."); }
-	~StateLobby() { Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Exit StateLobby."); }
+	StateLobby() { Cli::writeDebugMsg("Enter StateLobby."); }
+	~StateLobby() { Cli::writeDebugMsg("Exit StateLobby."); }
 };
 
 } // end namespace state

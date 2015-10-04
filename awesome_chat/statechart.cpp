@@ -14,7 +14,7 @@ namespace state
 
 StateSelectMode::StateSelectMode(my_context ctx) : my_base( ctx )
 {
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter SelectMode.");
+	Cli::writeDebugMsg("Enter SelectMode.");
 
 	// Request mode from user:
 	bool inputAccepted = false;
@@ -56,7 +56,7 @@ int RequestPort() // todo fri funktion - syntes vi det er en god ide????
 
 StateServerSetup::StateServerSetup(my_context ctx) : my_base( ctx )
 {
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateServerSetup.");
+	Cli::writeDebugMsg("Enter StateServerSetup.");
 
 	int port = RequestPort();
 
@@ -65,7 +65,7 @@ StateServerSetup::StateServerSetup(my_context ctx) : my_base( ctx )
 
 StateClientDisconnected::StateClientDisconnected(my_context ctx) : my_base( ctx )
 {
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClientDisconnected.");
+	Cli::writeDebugMsg("Enter StateClientDisconnected.");
 
 	// Request ip from user:
 	std::string ip = Cli::getUserString("Set the server ip:");

@@ -38,27 +38,27 @@ void MessageParser::createEventFromInput(std::string command)
             {
                 return createJoinEvent();
             }else{
-                Cli::writeDebugMsg(Cli::LOGTYPE_WARNING, "Invalid command!");
+                Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Invalid command!");
             }
 
         }catch (const std::out_of_range& oor)
         {
-            Cli::writeDebugMsg(Cli::LOGTYPE_ERROR, "Out of range exception");
+            Cli::writeDebugMsg( "Out of range exception");
         }
     }else
     {
-        Cli::writeDebugMsg(Cli::LOGTYPE_WARNING, "Command to short");
+        Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Command to short");
     }
 }
 void MessageParser::createJoinEvent()
 {
-    Cli::writeDebugMsg(Cli::LOGTYPE_INFO, "Join event created");
+    Cli::writeDebugMsg("Join event created");
 }
 void MessageParser::createWhoEvent()
 {
-    Cli::writeDebugMsg(Cli::LOGTYPE_INFO, "Who event created");
+    Cli::writeDebugMsg("Who event created");
 }
 void MessageParser::createMsgEvent(std::string)
 {
-    Cli::writeDebugMsg(Cli::LOGTYPE_INFO, "Msg event created");
+    Cli::writeDebugMsg("Msg event created");
 }

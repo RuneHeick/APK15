@@ -40,6 +40,6 @@ int main(){
     myParser.createEventFromInput("fjjgdshfjdsfhsdkjfhdsjfhdsjkghjsdhgksdjghsdkjfhdsjkbgksdjghdsjkbgjdkshgdsjkghdsjkhgdskjghdskjg");
     myParser.createEventFromInput("");
 
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, ">> main exit <<");
+	Cli::writeDebugMsg(">> main exit <<");
 }
 

@@ -71,6 +71,6 @@ void RoomHandler::printAllRooms()
 {
     for (auto it = rooms_.begin(); it != rooms_.end(); it++)
     {
-        Cli::writeDebugMsg(Cli::LOGTYPE_INFO, (*it)->getName());
+        Cli::writeDebugMsg((*it)->getName());
     }
 }

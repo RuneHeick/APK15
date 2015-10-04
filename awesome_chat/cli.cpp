@@ -40,7 +40,7 @@ std::string Cli::getUserInput()
 
 std::string Cli::getUserString(const std::string requestPrint)
 {
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, requestPrint);
+	Cli::writeLogMsg(Cli::LOGTYPE_INFO, requestPrint);
     return getUserInput();
 }
 
@@ -65,14 +65,15 @@ int Cli::getUserInt(const std::string requestPrint)
 	return value;
 }
 
-void Cli::writeDebugMsg(const std::string logtype,const std::string msg)
+void Cli::writeDebugMsg(const std::string msg)
 {
-    std::cout << pt::second_clock::local_time().time_of_day() << " [" <<logtype << "]: " << msg << std::endl;
+    writeLogMsg("DEBUG", msg);
 }
 
-void Cli::writeLogMsg(const std::string msg)
+void Cli::writeLogMsg(const std::string logtype, const std::string msg)
 {
     
+    std::cout << pt::second_clock::local_time().time_of_day() << " [" <<logtype << "]: " << msg << std::endl;
 }
 
 void Cli::writeChatMsg(const std::string name, const std::string msg)

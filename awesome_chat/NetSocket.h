@@ -14,6 +14,7 @@
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include "RawPacket.h"
+#include <memory>
 
 namespace bip = boost::asio::ip;
 
@@ -21,17 +22,16 @@ class Client
 {
 public:
 	Client(){};
-	Client(boost::shared_ptr<bip::tcp::socket> soc):socket(soc)
+	Client(std::shared_ptr<bip::tcp::socket> soc):socket(soc)
 	{};
 	void connect(std::string ip, uint port);
 	void disconnect();
-	boost::shared_ptr<RawPacket> read();
-	void write(boost::shared_ptr<RawPacket> data);
-	bool IsOpen() {return isOpen;}
+	std::shared_ptr<RawPacket> read();
+	void write(std::shared_ptr<RawPacket> data);
+	bool IsOpen() {if(socket) return socket->is_open(); else return false;}
 
 private:
-	boost::shared_ptr<bip::tcp::socket> socket;
-	bool isOpen = false;
+	std::shared_ptr<bip::tcp::socket> socket;
 };
 
 class Server
@@ -42,7 +42,7 @@ public:
 	Client Accept();
 
 private:
-	boost::shared_ptr<bip::tcp::acceptor> acceptorPtr;
+	std::shared_ptr<bip::tcp::acceptor> acceptorPtr;
 	boost::asio::io_service io_service;
 };
 

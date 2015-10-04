@@ -1,14 +1,27 @@
 
 #include <iostream>
-#include <boost/asio.hpp>
-
+#include "clientInfo.h"
 #include "statechart.h"
-#include "messageParser.h"
+#include "event.h"
+#include "eventJoin.h"
+
+#include "clientInfo.h"
+#include "NetSocket.h"
+
 
 int main(){
+
+	//Init The Variant Type;
+	typedef ImplemToList<Interface>::type IList;
+	typedef boost::make_variant_over<IList>::type VariantType;
+
+	ClientInfo<VariantType> Temp(Client());
+
+
+	return 0;
 	// Create and initiate the state machine
-//	state::ChatStateMachine sm;
-//	sm.initiate();
+	state::ChatStateMachine sm;
+	sm.initiate();
 
 //    // Server
 //    sm.process_event(state::EvServerMode());
@@ -23,23 +36,7 @@ int main(){
 //    sm.process_event(state::EvClientConnect());
 //    sm.process_event(state::EvClientEnterRoom());
 //    sm.process_event(state::EvClientLeaveRoom());
-    
-    MessageParser myParser;
-    myParser.createEventFromInput("Hej");
-    myParser.createEventFromInput("/join");
-    myParser.createEventFromInput("/who");
-    myParser.createEventFromInput("/Join");
-    myParser.createEventFromInput("/Who");
-    myParser.createEventFromInput("/jOin");
-    myParser.createEventFromInput("/wHO");
-    myParser.createEventFromInput("/noo");
-    myParser.createEventFromInput("/");
-    myParser.createEventFromInput("/a");
-    myParser.createEventFromInput("\\");
-    myParser.createEventFromInput("/dfsjfsdkfjdskjfk");
-    myParser.createEventFromInput("fjjgdshfjdsfhsdkjfhdsjfhdsjkghjsdhgksdjghsdkjfhdsjkbgksdjghdsjkbgjdkshgdsjkghdsjkhgdskjghdskjg");
-    myParser.createEventFromInput("");
 
-	Cli::writeDebugMsg(">> main exit <<");
+	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, ">> main exit <<");
 }
 

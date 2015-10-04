@@ -3,19 +3,19 @@
 
 void Server::Lisen(uint port)
 {
-	acceptorPtr = boost::shared_ptr<bip::tcp::acceptor>(new bip::tcp::acceptor(io_service, bip::tcp::endpoint(bip::tcp::v4(), port)));
+	acceptorPtr = std::shared_ptr<bip::tcp::acceptor>(new bip::tcp::acceptor(io_service, bip::tcp::endpoint(bip::tcp::v4(), port)));
 }
 
 Client Server::Accept()
 {
 	if(acceptorPtr)
 	{
-		boost::shared_ptr<bip::tcp::socket> socPtr = boost::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
+		std::shared_ptr<bip::tcp::socket> socPtr = std::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
 		acceptorPtr->accept(*socPtr);
 
 		return Client(socPtr);
 	}
-	return boost::shared_ptr<bip::tcp::socket>();
+	return std::shared_ptr<bip::tcp::socket>();
 }
 
 void Client::connect(std::string ip, uint port)
@@ -29,7 +29,7 @@ void Client::connect(std::string ip, uint port)
 	bip::tcp::resolver::iterator end;
 
 
-	socket = boost::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
+	socket = std::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
 	boost::system::error_code error = boost::asio::error::host_not_found;
 	while (error && endpoint_iterator != end)
 	{
@@ -39,12 +39,9 @@ void Client::connect(std::string ip, uint port)
 
 	if (error)
 	  throw boost::system::system_error(error);
-
-	isOpen = true;
-
 }
 
-boost::shared_ptr<RawPacket> Client::read()
+std::shared_ptr<RawPacket> Client::read()
 {
 	  try
 	  {
@@ -53,7 +50,7 @@ boost::shared_ptr<RawPacket> Client::read()
 		  if(len == 2)
 		  {
 			  size_t packetSize = (lenbuffer[0]<<8)+lenbuffer[1];
-			  boost::shared_ptr<RawPacket> packet(new RawPacket(packetSize));
+			  std::shared_ptr<RawPacket> packet(new RawPacket(packetSize));
 			  size_t recivedPlen = 0;
 			  while(recivedPlen < packetSize)
 			  {
@@ -66,10 +63,9 @@ boost::shared_ptr<RawPacket> Client::read()
 	  }
 	  catch(boost::system::system_error & e)
 	  {
-		  isOpen = false;
 		  if(e.code() == boost::asio::error::eof)
 		  {
-			  return boost::shared_ptr<RawPacket>(new RawPacket(0));
+			  return std::shared_ptr<RawPacket>(new RawPacket(0));
 		  }
 		  else
 		  {
@@ -78,11 +74,11 @@ boost::shared_ptr<RawPacket> Client::read()
 		  }
 	  }
 
-	  return boost::shared_ptr<RawPacket>(new RawPacket(0));
+	  return std::shared_ptr<RawPacket>(new RawPacket(0));
 
 }
 
-void Client::write(boost::shared_ptr<RawPacket> data)
+void Client::write(std::shared_ptr<RawPacket> data)
 {
 
 	try
@@ -93,7 +89,6 @@ void Client::write(boost::shared_ptr<RawPacket> data)
 	}
 	catch(boost::system::system_error & e)
 	{
-	  isOpen = false;
 	  if(e.code() != boost::asio::error::eof)
 	  {
 		  throw;
@@ -103,9 +98,8 @@ void Client::write(boost::shared_ptr<RawPacket> data)
 
 void Client::disconnect()
 {
-	if(isOpen)
+	if(socket && socket->is_open())
 	{
-		isOpen = false;
 		socket->close();
 	}
 }

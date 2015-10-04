@@ -17,8 +17,7 @@ public:
     Cli();
     ~Cli();
     
-    static std::string getUserString(const std::string PrintedRequest);
-    static int getUserInt(const std::string PrintedRequest);
+    static std::string getUserInput();
     
     static void writeDebugMsg(const std::string, const std::string);
     static void writeLogMsg(const std::string);

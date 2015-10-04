@@ -19,7 +19,8 @@ StateSelectMode::StateSelectMode(my_context ctx) : my_base( ctx )
 	// Request mode from user:
 	bool inputAccepted = false;
 	do {
-		std::string usrInput = Cli::getUserString("Choose \"server\" or \"client\"");
+		Cli::writeChatMsg(Cli::LOGTYPE_INFO, "Choose \"server\" or \"client\"");
+		std::string usrInput = Cli::getUserInput();
 
 		if(usrInput.compare("server") == 0) { // 0 = equal
 			post_event(EvServerMode());
@@ -33,14 +34,25 @@ StateSelectMode::StateSelectMode(my_context ctx) : my_base( ctx )
 	} while (!inputAccepted);
 }
 
-int RequestPort() // todo fri funktion - syntes vi det er en god ide????
+StateServerSetup::StateServerSetup(my_context ctx) : my_base( ctx )
 {
+	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateServerSetup.");
+
 	int port;
+
+	// Request port from user:
 	bool inputAccepted = false;
 	do {
+		Cli::writeChatMsg(Cli::LOGTYPE_INFO, "Set the port:");
+		std::string usrInput = Cli::getUserInput();
+
 		try {
-			port = Cli::getUserInt("Set the port:");
-		} catch(...) {
+			port = std::stoi(usrInput);
+		} catch(std::out_of_range& e) {
+			Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Port out of range. Valid interval: [0,65535].");
+			continue;
+		} catch(std::invalid_argument& e) {
+			Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Invalid input - unable to convert to a number.");
 			continue;
 		}
 
@@ -49,31 +61,12 @@ int RequestPort() // todo fri funktion - syntes vi det er en god ide????
 		} else {
 			Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Port out of range. Valid interval: [0,65535].");
 		}
+
 	} while (!inputAccepted);
-
-	return port;
-}
-
-StateServerSetup::StateServerSetup(my_context ctx) : my_base( ctx )
-{
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateServerSetup.");
-
-	int port = RequestPort();
 
 	context<StateServer>().chatServer.SetPort(port);
 }
 
-StateClientDisconnected::StateClientDisconnected(my_context ctx) : my_base( ctx )
-{
-	Cli::writeDebugMsg(Cli::LOGTYPE_INFO,"Enter StateClientDisconnected.");
 
-	// Request ip from user:
-	std::string ip = Cli::getUserString("Set the server ip:");
-
-	// Request port from user:
-	int port = RequestPort();
-
-	context<StateClient>().chatClient.Connect(ip, port);
-}
 
 } // end namespace state

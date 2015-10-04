@@ -22,11 +22,11 @@ public:
     ~Room();
     std::string getName();
     void broadcastMsg(std::string);
-    void addClient(std::shared_ptr<ClientInfo>);
-    void removeClient(std::shared_ptr<ClientInfo>);
+    //void addClient(std::shared_ptr<ClientInfo>);
+    //void removeClient(std::shared_ptr<ClientInfo>);
 private:
     std::string name_;
-    std::vector<std::shared_ptr< ClientInfo > > clients_;
+    //std::vector<std::shared_ptr< ClientInfo > > clients_;
 };
 
 #endif /* defined(__ac__room__) */

@@ -10,5 +10,17 @@
 #define __ac__messageParser__
 
 #include <stdio.h>
+#include <string>
 
+class MessageParser{
+public:
+    MessageParser();
+    ~MessageParser();
+    void createEventFromInput(std::string);
+private:
+    void createJoinEvent();
+    void createWhoEvent();
+    void createMsgEvent(std::string);
+    
+};
 #endif /* defined(__ac__messageParser__) */

@@ -20,12 +20,11 @@ public:
     RoomHandler(std::string defaultRoomName);
     ~RoomHandler();
     std::shared_ptr<Room> getRoom(std::string roomName);
-    void moveClient(std::shared_ptr<ClientInfo>, std::string, std::string);
     void printAllRooms();
     
+    void deleteRoom(std::string);
 private:
     void addRoom(std::shared_ptr<Room>);
-    void deleteRoom(std::string);
     
     
     std::shared_ptr<Room> createNewRoom(std::string roomName);

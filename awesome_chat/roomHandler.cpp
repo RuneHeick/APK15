@@ -39,11 +39,6 @@ std::shared_ptr<Room> RoomHandler::getRoom(std::string roomName)
     return roomPtr;
 }
 
-void RoomHandler::moveClient(std::shared_ptr<ClientInfo> self, std::string currentRoom, std::string destination)
-{
-    
-}
-
 std::shared_ptr<Room> RoomHandler::createNewRoom(std::string roomName)
 {
     std::shared_ptr<Room> roomPtr(new Room(roomName));
@@ -59,11 +54,14 @@ void RoomHandler::addRoom(std::shared_ptr<Room> room)
 
 void RoomHandler::deleteRoom(std::string name_)
 {
-    for (auto it = rooms_.begin(); it != rooms_.end(); it++) {
+    for (auto it = rooms_.begin(); it != rooms_.end(); ) {
         
         if (name_ == (*it)->getName())
         {
             rooms_.erase(it);
+        }else
+        {
+            it++;
         }
     }
 }

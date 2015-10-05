@@ -1,3 +1,7 @@
+
+#ifndef EVENTJOIN_H_
+#define EVENTJOIN_H_
+
 #include "event.h"
 #include <iostream>
 #include "RawPacket.h"
@@ -32,5 +36,4 @@ private:
     std::string targetRoom_;
 };
 
-
-
+#endif

@@ -23,7 +23,7 @@ public:
     ~MessageParser();
     
     template<typename T>
-    T createEventFromInput(std::string user, std::string room);
+    T createEventFromInput(std::string user, std::string command);
     
 private:
     EventJoin createJoinEvent(std::string usr, std::string room);

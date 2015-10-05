@@ -19,7 +19,7 @@ public:
 
 	void ParseUserInput(std::string const & usrInput);
 private:
-	MessageParser usrInputParser;
+//	MessageParser usrInputParser;
 	// todo SimpleSocket networkSocket();
 
 	std::string m_ServerIp;

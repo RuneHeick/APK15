@@ -1,3 +1,7 @@
+#ifndef _EVENT_LOCK_INCLUDE
+#error Events must be added in the Events.h file, include this instead.
+#else
+
 #ifndef EVENT_H_
 #define EVENT_H_
 
@@ -94,7 +98,7 @@ class Implem2 : public IDSet<Holder< Implem2 >::ID>
 
 
 
-
+#endif
 
 
 #endif

@@ -11,7 +11,6 @@
 #include <boost/mpl/empty_sequence.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/variant.hpp>
-#include <iostream>
 #include "../Events/Events.hpp"
 
 template<typename T>

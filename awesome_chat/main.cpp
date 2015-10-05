@@ -4,7 +4,6 @@
 #include "Network/clientInfo.h"
 #include "StateMachine/StateMachineWrapper.h"
 
-
 int main(){
 
 	MessageParser mp;

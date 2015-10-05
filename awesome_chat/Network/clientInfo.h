@@ -17,7 +17,6 @@
 #include "../Events/Events.hpp"
 #include <mutex>
 #include <thread>
-#include "EventSerilizer.h"
 #include <boost/system/system_error.hpp>
 
 class ClientInfo {
@@ -41,7 +40,7 @@ public:
 
 	std::string Name;
 private:
-	EventSerilizer<IList> serilizer;
+	EventSerilizer serilizer;
 
 	std::mutex socketMutex;
 	std::thread m_thread;

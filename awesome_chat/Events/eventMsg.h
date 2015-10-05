@@ -21,7 +21,7 @@ public:
     {
 
     }
-    
+
 	static std::shared_ptr<RawPacket> ToByte(EventMsg& data)
 	{
 		std::cout<<"Enter"<<std::endl;
@@ -33,6 +33,7 @@ public:
 
 		return temp;
 	}
+
 
 	static EventMsg FromByte(uint8_t* packet, std::size_t size)
 	{

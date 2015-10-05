@@ -57,6 +57,7 @@ EventVariant MessageParser::createEventFromInput(std::string user, std::string c
 	{
 		Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Command to short");
 	}
+
 }
 
 EventJoin MessageParser::createJoinEvent(std::string usr, std::string room)

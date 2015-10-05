@@ -21,7 +21,7 @@
 // After All Events
 typedef ImplemToList<Interface>::type IList;
 typedef boost::make_variant_over<IList>::type EventVariant;
-
+#include "EventSerilizer.h"
 #undef _EVENT_LOCK_INCLUDE
 #undef MK_EVENT
 #endif /* EVENTS_EVENTS_HPP_ */

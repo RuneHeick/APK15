@@ -5,7 +5,7 @@
 #include "StateMachine/StateMachineWrapper.h"
 
 int main(){
-
+	EventSerilizer test;
 	MessageParser mp;
 
 	EventVariant var = mp.createEventFromInput("Rune", "/join Rune");

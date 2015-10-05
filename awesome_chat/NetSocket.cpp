@@ -17,7 +17,7 @@ Simple_Socket Simple_Server::Accept()
 	return std::shared_ptr<bip::tcp::socket>();
 }
 
-Simple_Socket& Simple_Socket::operator=(Simple_Socket& other)
+Simple_Socket& Simple_Socket::operator=(Simple_Socket other)
 {
 	socket = other.socket;
 	return *this;
@@ -78,7 +78,6 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 		  }
 		  else
 		  {
-			  //Close
 			  throw;
 		  }
 	  }

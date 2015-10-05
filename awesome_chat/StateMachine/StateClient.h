@@ -6,7 +6,7 @@
 #define STATEMACHINE_STATECLIENT_H_
 
 #include "ChatStateMachine.h"
-#include "../client.h"
+#include "../NetSocket.h"
 
 namespace StateMachine {
 
@@ -15,7 +15,7 @@ struct StateClient : sc::simple_state<StateClient, ChatStateMachine, StateClient
 	StateClient() { Cli::writeDebugMsg("Enter StateClient."); }
 	~StateClient() { Cli::writeDebugMsg("Exit StateClient."); }
 
-	client chatClient;
+	Simple_Socket chatClient;
 };
 
 } /* namespace StateMachine */

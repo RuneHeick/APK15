@@ -6,6 +6,8 @@
 #define STATEMACHINE_STATECLIENTCONNECTED_H_
 
 #include "StateClient.h"
+#include "../clientInfo.h"
+#include "../event.h"
 
 namespace StateMachine {
 
@@ -15,11 +17,26 @@ struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient
 			sc::custom_reaction<EvClientDisconnect>,
 			sc::custom_reaction<EvUserInput> >reactions;
 
-	StateClientConnected() { Cli::writeDebugMsg("Enter StateClientConnected."); }
+	StateClientConnected()
+	{
+		Cli::writeDebugMsg("Enter StateClientConnected.");
+		try
+		{
+			//client = ClientInfo<IList>( context<StateClient>().chatClient );
+		}
+		catch(...)
+		{
+			post_event(EvClientDisconnect());
+		}
+	}
+
 	~StateClientConnected() { Cli::writeDebugMsg("Exit StateClientConnected."); }
 
 	sc::result react( const EvClientDisconnect & );
 	sc::result react( const EvUserInput & );
+private:
+	//ClientInfo<IList> client;
+
 };
 
 } /* namespace StateMachine */

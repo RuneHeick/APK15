@@ -16,7 +16,7 @@ StateClientGetIp::StateClientGetIp(my_context ctx) : my_base( ctx )
 
 sc::result StateClientGetIp::react( const EvUserInput & )
 {
-	context<StateClient>().chatClient.SetServerIp(*context<ChatStateMachine>().usrInput);
+	context<StateClientDisconnected>().ip = *context<ChatStateMachine>().usrInput;
 	return transit<StateClientGetPort>();
 }
 

@@ -43,7 +43,6 @@ public:
 		}
 	}
 
-
 	void Send(TVariant& type)
 	{
 		std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);

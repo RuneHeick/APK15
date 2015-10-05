@@ -24,7 +24,7 @@ public:
 	Simple_Socket(){};
 	Simple_Socket(std::shared_ptr<bip::tcp::socket> soc):socket(soc){};
 
-	Simple_Socket& operator=(Simple_Socket& other);
+	Simple_Socket& operator=(Simple_Socket other);
 	Simple_Socket(const Simple_Socket& other);
 
 	void connect(const std::string& ip, uint port);

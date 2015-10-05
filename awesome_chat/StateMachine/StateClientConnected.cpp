@@ -14,7 +14,7 @@ sc::result StateClientConnected::react( const EvClientDisconnect & ) {
 }
 
 sc::result StateClientConnected::react( const EvUserInput & ) {
-	/*auto event =*/ context<StateClient>().chatClient.ParseUserInput(*context<ChatStateMachine>().usrInput);
+	//auto event = context<StateClient>().chatClient.ParseUserInput(*context<ChatStateMachine>().usrInput);
 	// todo handle event
 
 	return discard_event();

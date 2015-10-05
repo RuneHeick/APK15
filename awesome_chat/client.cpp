@@ -4,14 +4,39 @@
 #include "cli.h"
 
 client::client() {
-	// TODO Auto-generated constructor stub
+	connected = false;
+	m_ServerPort = 0;
 }
 
-client::~client() {
-	// TODO Auto-generated destructor stub
+void client::SetServerIp(std::string const & ip)
+{
+	m_ServerIp = ip;
 }
 
-void client::Connect(std::string ip, uint16_t port) {
-	// todo implement.
-	Cli::writeDebugMsg(std::string("Ip set to: ") + ip + std::string(" and port set to: ") + std::to_string(port) );
+void client::SetPort(uint16_t port)
+{
+	m_ServerPort = port;
+}
+
+bool client::Connect() {
+	try{
+//		networkSocket.Connect(m_ServerIp, m_ServerPort); // todo add this line.
+		Cli::writeLogMsg(Cli::LOGTYPE_INFO, std::string("Connected to: ") + m_ServerIp + std::string(" Port: ") + std::to_string(m_ServerPort));
+		connected = true;
+	} catch (boost::system::error_code& error) {
+		Cli::writeLogMsg(Cli::LOGTYPE_ERROR,
+				std::string("Failed to connect: ") + m_ServerIp
+				+ std::string(" Port: ") + std::to_string(m_ServerPort)
+				+ std::string(" Error: ") + error.message());
+	}
+
+	return connected;
+}
+
+void client::Disconnect() {
+	connected = false;
+}
+
+void client::ParseUserInput(std::string const & usrInput) {
+	usrInputParser.createEventFromInput(usrInput);
 }

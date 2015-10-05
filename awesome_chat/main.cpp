@@ -1,7 +1,8 @@
 
 #include <iostream>
 #include "clientInfo.h"
-#include "statechart.h"
+#include "StateMachine/StateMachineWrapper.h"
+#include "UserInputHandler.h"
 #include "event.h"
 #include "eventJoin.h"
 
@@ -17,11 +18,13 @@ int main(){
 
 	ClientInfo<VariantType> Temp(Client());
 
-
-	return 0;
 	// Create and initiate the state machine
-	state::ChatStateMachine sm;
-	sm.initiate();
+	StateMachine::StateMachineWrapper statemachine;
+
+	// Start reading user intput
+	UserInputHandler uih( std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1) );
+	uih.Start();
+
 
 //    // Server
 //    sm.process_event(state::EvServerMode());
@@ -37,6 +40,9 @@ int main(){
 //    sm.process_event(state::EvClientEnterRoom());
 //    sm.process_event(state::EvClientLeaveRoom());
 
-//	Cli::writeDebugMsg(Cli::LOGTYPE_INFO, ">> main exit <<");
+	const std::chrono::seconds sleepTime_s(90);
+	std::this_thread::sleep_for(sleepTime_s);
+
+	Cli::writeDebugMsg(">> main exit <<");
 }
 

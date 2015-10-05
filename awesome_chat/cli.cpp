@@ -55,10 +55,10 @@ int Cli::getUserInt(const std::string requestPrint)
 	try {
 		value = std::stoi(str);
 	} catch(std::out_of_range& e) {
-		Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Input value out of range.");
+		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Input value out of range.");
 		throw;
 	} catch(std::invalid_argument& e) {
-		Cli::writeChatMsg(Cli::LOGTYPE_ERROR, "Invalid input - unable to convert to an integer.");
+		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Invalid input - unable to convert to an integer.");
 		throw;
 	}
 

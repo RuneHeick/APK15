@@ -1,10 +1,10 @@
 #ifndef _H_BASERESSOURCE
 #define _H_BASERESSOURCE
 
-#include "../NetSocket.h"
+#include "../Network/NetSocket.h"
 #include <boost/signals2.hpp>
 
-class BaseRessource
+struct BaseRessource
 {
 	virtual void Start(Simple_Socket& data) = 0;
 

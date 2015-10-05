@@ -6,7 +6,7 @@
 #define STATEMACHINE_STATECLIENTDISCONNECTED_H_
 
 #include "StateClient.h"
-#include "../NetSocket.h"
+#include "../Network/NetSocket.h"
 
 namespace StateMachine {
 

@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "clientInfo.h"
+#include "Network/clientInfo.h"
 
 class Room {
     

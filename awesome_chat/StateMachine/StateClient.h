@@ -6,7 +6,7 @@
 #define STATEMACHINE_STATECLIENT_H_
 
 #include "ChatStateMachine.h"
-#include "../NetSocket.h"
+#include "../Network/NetSocket.h"
 
 namespace StateMachine {
 

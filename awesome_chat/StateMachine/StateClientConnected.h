@@ -6,8 +6,9 @@
 #define STATEMACHINE_STATECLIENTCONNECTED_H_
 
 #include "StateClient.h"
-#include "../clientInfo.h"
+#include "../Network/clientInfo.h"
 #include "../event.h"
+#include "../StateRessource/RessourceManager.h"
 
 namespace StateMachine {
 
@@ -22,7 +23,8 @@ struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient
 		Cli::writeDebugMsg("Enter StateClientConnected.");
 		try
 		{
-			//client = ClientInfo<IList>( context<StateClient>().chatClient );
+			RessourceManager::ConnectedStateRec->Start(context<StateClient>().chatClient);
+			errorConnection = RessourceManager::ConnectedStateRec->Error.connect(boost::bind(&StateClientConnected::OnError, this)); // will disconnect on destruction;
 		}
 		catch(...)
 		{
@@ -32,11 +34,15 @@ struct StateClientConnected : sc::simple_state<StateClientConnected, StateClient
 
 	~StateClientConnected() { Cli::writeDebugMsg("Exit StateClientConnected."); }
 
+	void OnError()
+	{
+		post_event(EvClientDisconnect());
+	}
+
 	sc::result react( const EvClientDisconnect & );
 	sc::result react( const EvUserInput & );
 private:
-	//ClientInfo<IList> client;
-
+	boost::signals2::scoped_connection errorConnection;
 };
 
 } /* namespace StateMachine */

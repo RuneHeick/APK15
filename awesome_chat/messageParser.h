@@ -16,7 +16,7 @@
 #include "eventMsg.h"
 #include "eventWho.h"
 
-
+/*
 class MessageParser{
 public:
     MessageParser();
@@ -31,4 +31,6 @@ private:
     EventMsg createMsgEvent(std::string usr, std::string msg);
     
 };
+
+*/
 #endif /* defined(__ac__messageParser__) */

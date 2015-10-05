@@ -9,7 +9,7 @@
 #include "messageParser.h"
 #include "cli.h"
 
-
+/*
 
 MessageParser::MessageParser()
 {
@@ -20,8 +20,7 @@ MessageParser::~MessageParser()
     
 }
 
-/* This function use substr which throws and out-of-range exception
-    This exception is handled inside the function*/
+// This function use substr which throws and out-of-range exception This exception is handled inside the function
 template<typename T>
 T MessageParser::createEventFromInput(std::string user, std::string command)
 {
@@ -82,3 +81,4 @@ EventMsg MessageParser::createMsgEvent(std::string usr, std::string msg)
     EventMsg e_msg(usr, msg);
     return e_msg;
 }
+*/

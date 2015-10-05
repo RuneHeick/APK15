@@ -1,5 +1,5 @@
 #include "eventWho.h"
-
+/*
 
 EventWho::EventWho(std::string usr)
 {
@@ -10,3 +10,4 @@ EventWho::~EventWho()
 {
     
 }
+*/

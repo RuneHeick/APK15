@@ -9,7 +9,7 @@
 #include "roomHandler.h"
 #include <string>
 #include "cli.h"
-#include "clientInfo.h"
+#include "Network/clientInfo.h"
 
 RoomHandler::RoomHandler(std::string defaultRoomName)
 {

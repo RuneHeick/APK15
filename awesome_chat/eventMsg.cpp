@@ -1,5 +1,5 @@
 #include "eventMsg.h"
-
+/*
 
 EventMsg::EventMsg(std::string sender, std::string msg)
 {
@@ -11,3 +11,4 @@ EventMsg::~EventMsg()
 {
     
 }
+*/

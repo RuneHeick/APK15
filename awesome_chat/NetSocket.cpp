@@ -28,7 +28,7 @@ Simple_Socket::Simple_Socket(const Simple_Socket& other)
 	socket = other.socket;
 }
 
-void Simple_Socket::connect(std::string ip, uint port)
+void Simple_Socket::connect(const std::string& ip, uint port)
 {
 
 	boost::asio::io_service io_service;
@@ -87,7 +87,7 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 
 }
 
-void Simple_Socket::write(std::shared_ptr<RawPacket> data)
+void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
 {
 
 	try

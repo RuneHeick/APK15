@@ -1,13 +1,14 @@
 #include "event.h"
 #include <iostream>
 
-MK_EVENT(Join)
+
+MK_EVENT(EventJoin)
 {
 public:
-
-	Join() {}
-
-	Join(uint8_t* packet, std::size_t size)
+    EventJoin(std::string user, std::string room);
+    ~EventJoin();
+    
+	static std::shared_ptr<RawPacket> ToByte()
 	{
 		for(int i = 0; i<size; i++)
 			std::cout<<packet[i];

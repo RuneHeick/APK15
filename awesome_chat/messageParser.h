@@ -12,16 +12,23 @@
 #include <stdio.h>
 #include <string>
 #include <stdexcept>
+#include "eventJoin.h"
+#include "eventMsg.h"
+#include "eventWho.h"
+
 
 class MessageParser{
 public:
     MessageParser();
     ~MessageParser();
-    void createEventFromInput(std::string);
+    
+    template<typename T>
+    T createEventFromInput(std::string);
+    
 private:
-    void createJoinEvent();
-    void createWhoEvent();
-    void createMsgEvent(std::string);
+    EventJoin createJoinEvent();
+    EventWho createWhoEvent();
+    EventMsg createMsgEvent(std::string);
     
 };
 #endif /* defined(__ac__messageParser__) */

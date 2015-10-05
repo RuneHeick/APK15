@@ -20,8 +20,10 @@ MessageParser::~MessageParser()
     
 }
 
-/* This function use substr which throws and out-of-range exception*/
-void MessageParser::createEventFromInput(std::string command)
+/* This function use substr which throws and out-of-range exception
+    This exception is handled inside the function*/
+template<typename T>
+T MessageParser::createEventFromInput(std::string command)
 {
     if(command.size() > 0)
     {
@@ -31,12 +33,15 @@ void MessageParser::createEventFromInput(std::string command)
             if(command.substr(0,1) != "/")
             {
                 return createMsgEvent(command);
+                
             }else if (command.substr(1,3) == "who")
             {
                 return createWhoEvent();
+                
             }else if (command.substr(1,4) == "join")
             {
                 return createJoinEvent();
+                
             }else{
                 Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Invalid command!");
             }
@@ -50,15 +55,15 @@ void MessageParser::createEventFromInput(std::string command)
         Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Command to short");
     }
 }
-void MessageParser::createJoinEvent()
+EventJoin MessageParser::createJoinEvent()
 {
     Cli::writeDebugMsg("Join event created");
 }
-void MessageParser::createWhoEvent()
+EventWho MessageParser::createWhoEvent()
 {
     Cli::writeDebugMsg("Who event created");
 }
-void MessageParser::createMsgEvent(std::string)
+EventMsg MessageParser::createMsgEvent(std::string)
 {
     Cli::writeDebugMsg("Msg event created");
 }

@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <thread>
+
 #include "clientInfo.h"
 #include "StateMachine/StateMachineWrapper.h"
 #include "UserInputHandler.h"
@@ -8,16 +10,61 @@
 
 #include "clientInfo.h"
 #include "NetSocket.h"
+#include "EventSerilizer.h"
+
+bool running = true;
+//Init The Variant Type;
+typedef ImplemToList<Interface>::type IList;
+
+void EccoServer()
+{
+	Simple_Server server;
+	server.Lisen(5555);
+	std::cout<<"Server Started"<<std::endl;
+	while(running)
+	{
+		std::cout<<"Accepting"<<std::endl;
+		Simple_Socket user = server.Accept();
+		std::cout<<"Got Client"<<std::endl;
+		while(user.IsOpen())
+		{
+			user.write(user.read());
+		}
+	}
+}
+
 
 
 int main(){
 
-	//Init The Variant Type;
-	typedef ImplemToList<Interface>::type IList;
-	typedef boost::make_variant_over<IList>::type VariantType;
 
-	ClientInfo<VariantType> Temp(Client());
 
+	std::thread t1(EccoServer);
+
+	usleep(10000);
+
+	Simple_Socket c;
+	c.connect("localhost",5555);
+	std::cout<<"Socket connected"<<std::endl;
+	ClientInfo<IList> ci( c );
+	std::cout<<"Client Info created"<<std::endl;
+	EventSerilizer<IList> serilizer;
+	std::shared_ptr<RawPacket> packet = serilizer.serilize(Join());
+
+	Join rune;
+	ClientInfo<IList>::TVariant var = rune;
+
+	std::cout<<"Sending"<<std::endl;
+	ci.Send(var);
+
+
+	usleep(10000);
+
+	c.disconnect();
+	running = false;
+	t1.join();
+
+	return 0;
 	// Create and initiate the state machine
 	StateMachine::StateMachineWrapper statemachine;
 

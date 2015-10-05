@@ -17,23 +17,47 @@
 #include "event.h"
 #include <mutex>
 #include <thread>
+#include "EventSerilizer.h"
+#include <boost/system/system_error.hpp>
 
-template<typename TVariant>
+template<typename TList>
 class ClientInfo {
 public:
 
-	typedef TVariant VariantType;
-	typedef void (*HandlerType)(ClientInfo<TVariant>, TVariant);
+	typedef typename boost::make_variant_over<TList>::type TVariant;
 
-	ClientInfo(Client clientsocket):client(clientsocket)
+	typedef void (*HandlerType)(ClientInfo<TVariant>*, TVariant);
+	typedef void (*DisconnectedHandlerType)(ClientInfo<TVariant>*);
+
+
+	ClientInfo(Simple_Socket clientsocket): client(clientsocket)
 	{
-
+		if(clientsocket.IsOpen())
+		{
+			isOpen = true;
+			m_thread = std::thread(&ClientInfo::threadRun, this);
+		}
+		else
+		{
+			throw boost::system::system_error(boost::asio::error::not_connected );
+		}
 	}
 
-	void Send(Interface& type)
+
+	void Send(TVariant& type)
 	{
-		std::unique_lock<std::mutex> lock(writeMutex, std::try_to_lock);
-		//client.write(type.ToByte());
+		std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);
+		if(isOpen)
+		{
+			try
+			{
+			client.write(serilizer.serilize(type));
+			}
+			catch(...)
+			{
+				OnDisconnect();
+			}
+		}
 	}
 
 	void AddRecivedHandler(HandlerType handler)
@@ -46,25 +70,63 @@ public:
 		recivedPacket.disconnect(handler);
 	}
 
+	void AddDisconnectHandler(DisconnectedHandlerType handler)
+	{
+		disconnected.connect(handler);
+	}
+
+	void RemoveDisconnectHandler(DisconnectedHandlerType handler)
+	{
+		disconnected.disconnect(handler);
+	}
+
 	std::string Name;
 private:
-	std::mutex writeMutex;
-	Client client;
-	boost::signals2::signal<void (ClientInfo<TVariant>, VariantType)> recivedPacket;
-	/*
+	EventSerilizer<TList> serilizer;
+
+	std::mutex socketMutex;
+	std::thread m_thread;
+
+	Simple_Socket client;
+	bool isOpen = false;
+
+	boost::signals2::signal<void (ClientInfo<TList>*, TVariant)> recivedPacket;
+	boost::signals2::signal<void (ClientInfo<TList>*)> disconnected;
+
+	void OnDisconnect()
+	{
+		std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);
+		if(isOpen)
+		{
+			isOpen = false;
+			disconnected(this);
+		}
+	}
+
 	void threadRun()
 	{
 		while(client.IsOpen())
 		{
-			auto packet = client.read();
-			if(packet->Size()>0)
+			try
 			{
-
-
+				auto packet = client.read();
+				if(packet->Size()>0)
+				{
+					TVariant var = serilizer.deserilize(packet);
+					recivedPacket(this, var);
+				}
+				else
+				{
+					OnDisconnect();
+				}
+			}
+			catch(...)
+			{
+				OnDisconnect();
 			}
 		}
 	}
-	*/
+
 
 };
 

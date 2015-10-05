@@ -7,7 +7,7 @@
 
 #include "RawPacket.h"
 
-RawPacket::RawPacket(size_t buffersize) {
+RawPacket::RawPacket(std::size_t buffersize) {
 	size = buffersize;
 	packet = new uint8_t[size];
 }
@@ -21,7 +21,7 @@ uint8_t* RawPacket::Packet()
 	return packet;
 }
 
-size_t RawPacket::Size()
+std::size_t RawPacket::Size()
 {
 	return size;
 }

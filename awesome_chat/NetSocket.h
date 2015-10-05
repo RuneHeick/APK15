@@ -18,28 +18,31 @@
 
 namespace bip = boost::asio::ip;
 
-class Client
+class Simple_Socket
 {
 public:
-	Client(){};
-	Client(std::shared_ptr<bip::tcp::socket> soc):socket(soc)
-	{};
-	void connect(std::string ip, uint port);
+	Simple_Socket(){};
+	Simple_Socket(std::shared_ptr<bip::tcp::socket> soc):socket(soc){};
+
+	Simple_Socket& operator=(Simple_Socket& other);
+	Simple_Socket(const Simple_Socket& other);
+
+	void connect(const std::string& ip, uint port);
 	void disconnect();
 	std::shared_ptr<RawPacket> read();
-	void write(std::shared_ptr<RawPacket> data);
+	void write(const std::shared_ptr<RawPacket>& data);
 	bool IsOpen() {if(socket) return socket->is_open(); else return false;}
 
 private:
 	std::shared_ptr<bip::tcp::socket> socket;
 };
 
-class Server
+class Simple_Server
 {
 public:
 	void Lisen(uint port);
 
-	Client Accept();
+	Simple_Socket Accept();
 
 private:
 	std::shared_ptr<bip::tcp::acceptor> acceptorPtr;

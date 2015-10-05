@@ -7,21 +7,20 @@
 
 #ifndef RAWPACKET_H_
 #define RAWPACKET_H_
-
+#include <cstdlib>
 #include <stdint.h>
-#include <stddef.h>
 
 class RawPacket {
 public:
-	RawPacket(size_t len);
+	RawPacket(std::size_t len);
 	virtual ~RawPacket();
 
 	uint8_t* Packet();
-	size_t Size();
+	std::size_t Size();
 
 private:
 	uint8_t * packet;
-	size_t size;
+	std::size_t size;
 };
 
 #endif /* RAWPACKET_H_ */

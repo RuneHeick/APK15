@@ -8,11 +8,12 @@
 #include <boost/mpl/push_front.hpp>
 #include <boost/mpl/empty_sequence.hpp>
 #include <boost/type_traits/is_same.hpp>
+#include <stdint.h>
+#include <stddef.h>
 #include <memory>
 
 using namespace boost::mpl;
 using namespace boost;
-
 
 // A type map. Implem #N of type Key is type (default: void)
 

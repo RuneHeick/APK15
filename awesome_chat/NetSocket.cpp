@@ -1,24 +1,34 @@
 #include "NetSocket.h"
 
-
-void Server::Lisen(uint port)
+void Simple_Server::Lisen(uint port)
 {
 	acceptorPtr = std::shared_ptr<bip::tcp::acceptor>(new bip::tcp::acceptor(io_service, bip::tcp::endpoint(bip::tcp::v4(), port)));
 }
 
-Client Server::Accept()
+Simple_Socket Simple_Server::Accept()
 {
 	if(acceptorPtr)
 	{
 		std::shared_ptr<bip::tcp::socket> socPtr = std::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
 		acceptorPtr->accept(*socPtr);
 
-		return Client(socPtr);
+		return Simple_Socket(socPtr);
 	}
 	return std::shared_ptr<bip::tcp::socket>();
 }
 
-void Client::connect(std::string ip, uint port)
+Simple_Socket& Simple_Socket::operator=(Simple_Socket& other)
+{
+	socket = other.socket;
+	return *this;
+}
+
+Simple_Socket::Simple_Socket(const Simple_Socket& other)
+{
+	socket = other.socket;
+}
+
+void Simple_Socket::connect(std::string ip, uint port)
 {
 
 	boost::asio::io_service io_service;
@@ -41,22 +51,21 @@ void Client::connect(std::string ip, uint port)
 	  throw boost::system::system_error(error);
 }
 
-std::shared_ptr<RawPacket> Client::read()
+std::shared_ptr<RawPacket> Simple_Socket::read()
 {
 	  try
 	  {
 		  uint8_t lenbuffer[2];
-		  size_t len = socket->receive(boost::asio::buffer(lenbuffer,2));
+		  std::size_t len = socket->receive(boost::asio::buffer(lenbuffer,2));
 		  if(len == 2)
 		  {
-			  size_t packetSize = (lenbuffer[0]<<8)+lenbuffer[1];
+			  std::size_t packetSize = (lenbuffer[0]<<8)+lenbuffer[1];
 			  std::shared_ptr<RawPacket> packet(new RawPacket(packetSize));
-			  size_t recivedPlen = 0;
+			  std::size_t recivedPlen = 0;
 			  while(recivedPlen < packetSize)
 			  {
 				  recivedPlen += socket->receive(boost::asio::buffer(&packet->Packet()[recivedPlen],packetSize-recivedPlen));
 			  }
-
 
 			  return packet;
 		  }
@@ -78,7 +87,7 @@ std::shared_ptr<RawPacket> Client::read()
 
 }
 
-void Client::write(std::shared_ptr<RawPacket> data)
+void Simple_Socket::write(std::shared_ptr<RawPacket> data)
 {
 
 	try
@@ -96,7 +105,7 @@ void Client::write(std::shared_ptr<RawPacket> data)
 	}
 }
 
-void Client::disconnect()
+void Simple_Socket::disconnect()
 {
 	if(socket && socket->is_open())
 	{

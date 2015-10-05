@@ -5,6 +5,14 @@ void Simple_Server::Lisen(uint port)
 	acceptorPtr = std::shared_ptr<bip::tcp::acceptor>(new bip::tcp::acceptor(io_service, bip::tcp::endpoint(bip::tcp::v4(), port)));
 }
 
+Simple_Server::~Simple_Server()
+{
+	if(acceptorPtr)
+	{
+		acceptorPtr->close();
+	}
+}
+
 Simple_Socket Simple_Server::Accept()
 {
 	if(acceptorPtr)

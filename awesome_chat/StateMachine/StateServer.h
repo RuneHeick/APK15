@@ -15,7 +15,7 @@ struct StateServer : sc::simple_state<StateServer, ChatStateMachine, StateServer
 	StateServer() { Cli::writeDebugMsg("Enter StateServer."); }
 	~StateServer() { Cli::writeDebugMsg("Exit StateServer."); }
 
-	server chatServer;
+	uint port;
 };
 
 } /* namespace StateMachine */

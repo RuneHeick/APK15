@@ -12,19 +12,18 @@
 #include <stdio.h>
 #include <string>
 #include <stdexcept>
-#include "eventJoin.h"
-#include "eventMsg.h"
-#include "eventWho.h"
+#include "Events/Events.hpp"
+#include "cli.h"
 
-/*
+
 class MessageParser{
 public:
     MessageParser();
     ~MessageParser();
     
-    template<typename T>
-    T createEventFromInput(std::string user, std::string command);
-    
+    // This function use substr which throws and out-of-range exception This exception is handled inside the function
+    EventVariant createEventFromInput(std::string user, std::string command);
+
 private:
     EventJoin createJoinEvent(std::string usr, std::string room);
     EventWho createWhoEvent(std::string usr);
@@ -32,5 +31,5 @@ private:
     
 };
 
-*/
+
 #endif /* defined(__ac__messageParser__) */

@@ -15,7 +15,8 @@ struct StateClient : sc::simple_state<StateClient, ChatStateMachine, StateClient
 	StateClient() { Cli::writeDebugMsg("Enter StateClient."); }
 	~StateClient() { Cli::writeDebugMsg("Exit StateClient."); }
 
-	Simple_Socket chatClient;
+	std::string ip = "";
+	uint port = 0;
 };
 
 } /* namespace StateMachine */

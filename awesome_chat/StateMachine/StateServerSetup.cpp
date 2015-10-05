@@ -23,7 +23,7 @@ sc::result StateServerSetup::react( const EvUserInput & ) {
 	uint16_t port;
 	try {
 		port = ParsePort(*context<ChatStateMachine>().usrInput);
-		context<StateServer>().chatServer.SetPort(port);
+		context<StateServer>().port = port;
 		post_event(EvSetupDone());
 	} catch(...) {
 		Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Set the port:");

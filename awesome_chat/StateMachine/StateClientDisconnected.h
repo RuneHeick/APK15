@@ -15,13 +15,10 @@ struct StateClientDisconnected : sc::simple_state<StateClientDisconnected, State
 	StateClientDisconnected()
 	{
 		Cli::writeDebugMsg("Enter StateClientDisconnected.");
-		context<StateClient>().chatClient = Simple_Socket();
 	}
 
 	~StateClientDisconnected() { Cli::writeDebugMsg("Exit StateClientDisconnected."); }
 
-	std::string ip;
-	uint port;
 };
 
 } /* namespace StateMachine */

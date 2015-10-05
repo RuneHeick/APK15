@@ -44,6 +44,8 @@ public:
 
 	Simple_Socket Accept();
 
+	~Simple_Server();
+
 private:
 	std::shared_ptr<bip::tcp::acceptor> acceptorPtr;
 	boost::asio::io_service io_service;

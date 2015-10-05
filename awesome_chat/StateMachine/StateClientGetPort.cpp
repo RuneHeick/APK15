@@ -26,17 +26,7 @@ sc::result StateClientGetPort::react( const EvUserInput & )
 	uint16_t port;
 	try {
 		port = ParsePort(*context<ChatStateMachine>().usrInput);
-		context<StateClientDisconnected>().port = port;
-
-		try
-		{
-			context<StateClient>().chatClient.connect(context<StateClientDisconnected>().ip ,port);
-		}
-		catch(...)
-		{
-			Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable to connect to server (ip: "+context<StateClientDisconnected>().ip+" port: "+std::to_string(port)+" )");
-			return  transit<StateClientDisconnected>();
-		}
+		context<StateClient>().port = port;
 
 		post_event(EvClientConnect());
 	} catch(...) {

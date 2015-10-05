@@ -12,7 +12,7 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/variant.hpp>
 #include <iostream>
-#include "../event.h"
+#include "../Events/Events.hpp"
 
 template<typename T>
 struct EventCreatorBase

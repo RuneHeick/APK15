@@ -1,22 +1,15 @@
-
 #include <iostream>
 #include <thread>
-
+#include "messageParser.h"
+#include "Network/clientInfo.h"
 #include "StateMachine/StateMachineWrapper.h"
-#include "event.h"
-#include "eventJoin.h"
-
-#include "StateRessource/BaseRessource.h"
-#include "StateRessource/ConnectedStateRessource.h"
-#include "StateRessource/RessourceManager.h"
-
 
 
 int main(){
-	typedef ImplemToList<Interface>::type IList;
 
-	RessourceManager::ConnectedStateRec = std::shared_ptr<BaseRessource>(new ConnectedStateRessource<IList>());
+	MessageParser mp;
 
+	EventVariant var = mp.createEventFromInput("Rune", "/join Rune");
 
 
 //	ClientInfo<IList> ci( c );

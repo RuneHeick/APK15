@@ -15,7 +15,7 @@ class StateMachineWrapper {
 public:
 	StateMachineWrapper();
 
-	void HandleUserInput(std::shared_ptr<std::string> str_ptr);
+	void HandleUserInput(const std::shared_ptr<std::string>& str_ptr);
 	void PostEvent(const sc::event_base & evt );
 private:
 	ChatStateMachine sm;

@@ -11,11 +11,10 @@ StateMachineWrapper::StateMachineWrapper() {
 	sm.initiate();
 }
 
-void StateMachineWrapper::HandleUserInput(std::shared_ptr<std::string> str_ptr) {
+void StateMachineWrapper::HandleUserInput(const std::shared_ptr<std::string>& str_ptr) {
 	std::lock_guard<std::mutex> lock(mtx);
 
 	sm.usrInput = str_ptr;
-
 	sm.process_event( EvUserInput() );
 }
 

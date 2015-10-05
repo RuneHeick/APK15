@@ -1,8 +1,5 @@
 /*
  * StateClientGetPort.cpp
- *
- *  Created on: Oct 4, 2015
- *      Author: stud
  */
 
 #include "StateClientGetPort.h"
@@ -18,10 +15,6 @@ StateClientGetPort::StateClientGetPort(my_context ctx) : my_base( ctx )
 	Cli::writeDebugMsg("Enter StateClientGetPort.");
 	Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Set the port:");
 }
-
-//StateClientGetPort::~StateClientGetPort() {
-//	// TODO Auto-generated destructor stub
-//}
 
 sc::result StateClientGetPort::react( const EvClientConnect & ) {
 	return  transit<StateClientConnected>();

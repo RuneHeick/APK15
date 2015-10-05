@@ -4,7 +4,6 @@
 
 #include "clientInfo.h"
 #include "StateMachine/StateMachineWrapper.h"
-#include "UserInputHandler.h"
 #include "event.h"
 #include "eventJoin.h"
 

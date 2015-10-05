@@ -38,5 +38,5 @@ void client::Disconnect() {
 }
 
 void client::ParseUserInput(std::string const & usrInput) {
-	usrInputParser.createEventFromInput(usrInput);
+	//usrInputParser.createEventFromInput(usrInput);
 }

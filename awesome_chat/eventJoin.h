@@ -1,21 +1,16 @@
 #include "event.h"
 #include <iostream>
+#include "RawPacket.h"
 
 
 MK_EVENT(EventJoin)
 {
 public:
+    EventJoin() = default;
     EventJoin(std::string user, std::string room);
     ~EventJoin();
     
-	static std::shared_ptr<RawPacket> ToByte()
-	{
-		for(int i = 0; i<size; i++)
-			std::cout<<packet[i];
-		std::cout<<std::endl;
-	}
-
-	static std::shared_ptr<RawPacket> ToByte(Join& data)
+	static std::shared_ptr<RawPacket> ToByte(EventJoin& data)
 	{
 		std::cout<<"Enter"<<std::endl;
 		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(3));
@@ -27,11 +22,14 @@ public:
 		return temp;
 	}
 
-	static Join FromByte(uint8_t* packet, std::size_t size)
+	static EventJoin FromByte(uint8_t* packet, std::size_t size)
 	{
 		std::cout<<"Exit"<<std::endl;
-		return Join(packet, size);
+		return EventJoin();
 	}
+private:
+    std::string userName_;
+    std::string targetRoom_;
 };
 
 

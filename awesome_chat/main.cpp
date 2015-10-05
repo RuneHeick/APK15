@@ -49,9 +49,9 @@ int main(){
 	ClientInfo<IList> ci( c );
 	std::cout<<"Client Info created"<<std::endl;
 	EventSerilizer<IList> serilizer;
-	std::shared_ptr<RawPacket> packet = serilizer.serilize(Join());
+	std::shared_ptr<RawPacket> packet = serilizer.serilize(EventJoin());
 
-	Join rune;
+	EventJoin rune;
 	ClientInfo<IList>::TVariant var = rune;
 
 	std::cout<<"Sending"<<std::endl;

@@ -23,12 +23,12 @@ public:
     ~MessageParser();
     
     template<typename T>
-    T createEventFromInput(std::string);
+    T createEventFromInput(std::string user, std::string room);
     
 private:
-    EventJoin createJoinEvent();
-    EventWho createWhoEvent();
-    EventMsg createMsgEvent(std::string);
+    EventJoin createJoinEvent(std::string usr, std::string room);
+    EventWho createWhoEvent(std::string usr);
+    EventMsg createMsgEvent(std::string usr, std::string msg);
     
 };
 #endif /* defined(__ac__messageParser__) */

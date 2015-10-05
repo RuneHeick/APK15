@@ -12,8 +12,7 @@
 #include <stddef.h>
 #include <memory>
 
-using namespace boost::mpl;
-using namespace boost;
+namespace mpl = boost::mpl;
 
 // A type map. Implem #N of type Key is type (default: void)
 
@@ -34,7 +33,7 @@ template <typename Key, typename Item, int N>
 struct ImplemListItem
 {
   public:
-    typedef typename push_front<typename ImplemToList<Key, N + 1>::type, Item>::type type;
+    typedef typename mpl::push_front<typename ImplemToList<Key, N + 1>::type, Item>::type type;
 };
 
 template <typename Key, int N>
@@ -42,9 +41,7 @@ struct ImplemToList
 {
   public:
     typedef typename Implem<Key, N>::type item;
-    typedef typename eval_if<is_same<item, void>,
-                             identity<vector<> >,
-                             ImplemListItem<Key, item, N> >::type type;
+    typedef typename mpl::eval_if<boost::is_same<item, void>, mpl::identity<mpl::vector<> >,ImplemListItem<Key, item, N> >::type type;
 };
 
 

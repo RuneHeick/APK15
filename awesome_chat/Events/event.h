@@ -51,18 +51,6 @@ struct ImplemToList
 
 class Interface
 {
-	public:
-		int ID = 0;
-};
-
-template<int i>
-class IDSet : public Interface
-{
-  public:
-	IDSet()
-	{
-		ID = i;
-	}
 };
 
 struct StartCount
@@ -70,30 +58,17 @@ struct StartCount
 	enum { value = __COUNTER__};
 };
 
-template<typename T>
-struct Holder
-{
-	enum{ID = 0};
-};
-
 #define MK_EVENT(Implem2) \
 class Implem2;\
 \
-template<>\
-struct Holder< Implem2 >\
-{\
-	enum{ID = __COUNTER__ - StartCount::value};\
-	\
-};\
-\
 template <>\
-struct Implem<Interface, Holder< Implem2 >::ID>\
+struct Implem<Interface, __COUNTER__ - StartCount::value>\
 {\
   public:\
     typedef Implem2 type;\
 };\
 \
-class Implem2 : public IDSet<Holder< Implem2 >::ID>
+class Implem2
 
 
 

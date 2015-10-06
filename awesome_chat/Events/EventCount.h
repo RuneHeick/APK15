@@ -1,7 +1,6 @@
 #ifndef EVENTS_EVENTCOUNT_H_
 #define EVENTS_EVENTCOUNT_H_
 #include <boost/mpl/vector.hpp>
-#include <boost/type_traits/is_same.hpp>
 
 template < typename Begin, typename Target,typename End, int ID, typename currenttype >
 struct Count_event
@@ -10,13 +9,11 @@ struct Count_event
 	enum{value = Count_event<typename boost::mpl::next< Begin >::type,Target,End, ID+1,currentType>::value };
 };
 
-
 template <typename Begin, typename Target,typename End, int ID>
 struct Count_event<Begin, Target, End, ID, Target >
 {
 	enum{value = ID};
 };
-
 
 template < typename Sequence, typename Target>
 struct Event_ID

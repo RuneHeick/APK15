@@ -19,15 +19,15 @@ class RoomHandler{
 public:
     RoomHandler(std::string defaultRoomName);
     ~RoomHandler();
+
     std::shared_ptr<Room> getRoom(std::string roomName);
+    void addRoom(std::shared_ptr<Room>);
+    void deleteRoom(std::string);
+
     void printAllRooms();
     
 private:
-    void addRoom(std::shared_ptr<Room>);
-    void deleteRoom(std::string);
-    
     std::shared_ptr<Room> createNewRoom(std::string roomName);
-    
     std::vector< std::shared_ptr< Room >> rooms_;
 };
 #endif /* defined(__ac__roomHandler__) */

@@ -3,12 +3,26 @@
 #define SERVER_H_
 
 #include <cstdint>
+#include "Network/NetSocket.h"
+#include "Network/clientInfo.h"
+#include "roomHandler.h"
+#include "clientHandler.h"
+
 
 class server {
 public:
-	server();
-	~server();
-	void SetPort(uint16_t port);
+	server(uint port);
+	virtual ~server();
+
+
+
+private:
+	Simple_Server listenServer;
+	std::thread AcceptThread;
+	ClientHandler clientHandler;
+
+	void AcceptClient();
+
 };
 
 #endif /* SERVER_H_ */

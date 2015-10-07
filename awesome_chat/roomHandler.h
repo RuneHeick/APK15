@@ -14,6 +14,7 @@
 #include <memory>
 #include "room.h"
 #include "Network/clientInfo.h"
+#include <mutex>
 
 class RoomHandler{
 public:
@@ -27,7 +28,7 @@ public:
     void printAllRooms();
     
 private:
-    std::shared_ptr<Room> createNewRoom(std::string roomName);
     std::vector< std::shared_ptr< Room >> rooms_;
+    std::mutex rooms_lock_;
 };
 #endif /* defined(__ac__roomHandler__) */

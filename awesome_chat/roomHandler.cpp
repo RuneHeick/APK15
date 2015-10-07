@@ -25,6 +25,8 @@ RoomHandler::~RoomHandler()
 
 std::shared_ptr<Room> RoomHandler::getRoom(std::string roomName)
 {
+    
+    std::lock_guard<std::mutex> lock(rooms_lock_);
     // Find the room and return it
     for (auto it = rooms_.begin(); it != rooms_.end(); it++)
     {
@@ -39,21 +41,17 @@ std::shared_ptr<Room> RoomHandler::getRoom(std::string roomName)
     return roomPtr;
 }
 
-std::shared_ptr<Room> RoomHandler::createNewRoom(std::string roomName)
-{
-    std::shared_ptr<Room> roomPtr(new Room(roomName));
-    return roomPtr;
-}
-
 
 void RoomHandler::addRoom(std::shared_ptr<Room> room)
 {
+    std::lock_guard<std::mutex> lock(rooms_lock_);
     rooms_.push_back(room);
 }
 
 
 void RoomHandler::deleteRoom(std::string name_)
 {
+    std::lock_guard<std::mutex> lock(rooms_lock_);
     for (auto it = rooms_.begin(); it != rooms_.end(); ) {
         
         if (name_ == (*it)->getName())
@@ -69,6 +67,7 @@ void RoomHandler::deleteRoom(std::string name_)
 
 void RoomHandler::printAllRooms()
 {
+    std::lock_guard<std::mutex> lock(rooms_lock_);
     for (auto it = rooms_.begin(); it != rooms_.end(); it++)
     {
         Cli::writeDebugMsg((*it)->getName());

@@ -20,8 +20,11 @@ private:
 	Simple_Server listenServer;
 	std::thread AcceptThread;
 	ClientHandler clientHandler;
+	bool running = true;
+	uint port;
 
-	void AcceptClient();
+
+	void ThreadAcceptClient();
 
 };
 

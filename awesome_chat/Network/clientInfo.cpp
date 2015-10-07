@@ -21,7 +21,7 @@ ClientInfo::ClientInfo(Simple_Socket clientsocket): client(clientsocket)
 
 void ClientInfo::Send(EventVariant& type)
 {
-	std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);
+	std::lock_guard<std::mutex> lock(socketMutex);
 	if(isOpen)
 	{
 		try

@@ -6,7 +6,7 @@
 #define STATEMACHINE_STATESERVERRUNNING_H_
 
 #include "StateServer.h"
-#include "../Network/NetSocket.h"
+#include "../server.h"
 
 namespace StateMachine {
 
@@ -19,8 +19,7 @@ struct StateServerRunning : sc::state<StateServerRunning, StateServer>
 		Cli::writeDebugMsg("Enter StateServerRunning.");
 		try
 		{
-			serverSocket.Lisen(context<StateServer>().port);
-
+			serverPtr = std::shared_ptr<server>(new server(context<StateServer>().port));
 		}
 		catch(...)
 		{
@@ -32,7 +31,7 @@ struct StateServerRunning : sc::state<StateServerRunning, StateServer>
 	~StateServerRunning() { Cli::writeDebugMsg("Exit StateServerRunning."); }
 
 private:
-	Simple_Server serverSocket;
+	std::shared_ptr<server> serverPtr;
 
 };
 

@@ -1,17 +1,43 @@
 
 #include "server.h"
-
 #include "cli.h"
 
-server::server(uint port) {
-	// TODO Auto-generated constructor stub
+server::server(uint serverPort): port(serverPort) {
+	listenServer.Lisen(port);
+	AcceptThread = std::thread(std::bind(&server::ThreadAcceptClient, this));
 }
 
 server::~server() {
-	// TODO Auto-generated destructor stub
+	running = false;
+	try
+	{
+		Simple_Socket CloseConnection;
+		CloseConnection.connect("loalhost", port);
+		CloseConnection.disconnect();
+		AcceptThread.join();
+	}
+	catch(...)
+	{};
 }
 
-void server::AcceptClient()
+void server::ThreadAcceptClient()
 {
+	while(running)
+	{
+		std::shared_ptr<ClientInfo> client;
+		try
+		{
+			Simple_Socket clientConnection = listenServer.Accept();
+			client = std::shared_ptr<ClientInfo>(new ClientInfo(clientConnection));
+		}
+		catch(...)
+		{
+			Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Connection faild for some reson");
+		}
 
+		if(client)
+		{
+			clientHandler.addNewClient(client);
+		}
+	}
 }

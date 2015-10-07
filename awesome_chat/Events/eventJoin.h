@@ -39,6 +39,16 @@ public:
 		std::cout<<"Exit"<<std::endl;
 		return EventJoin();
 	}
+    
+    std::string getUser()
+    {
+        return userName_;
+    }
+    
+    std::string getTargetRoom()
+    {
+        return targetRoom_;
+    }
 private:
     std::string userName_;
     std::string targetRoom_;

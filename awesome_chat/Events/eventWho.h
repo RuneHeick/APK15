@@ -37,6 +37,10 @@ public:
 		return EventWho("moo");
 	}
 
+    std::string getUser()
+    {
+        return user;
+    }
 private:
     std::string user;
     

@@ -5,10 +5,10 @@
 #include "StateMachine/StateMachineWrapper.h"
 
 int main(){
-	EventSerilizer test;
+//	EventSerilizer test;
 	MessageParser mp;
 
-	EventVariant var = mp.createEventFromInput("Rune", "/join Rune");
+    EventVariant var = mp.createEventFromInput("Rune", "/join IHA");
 
 
 //	ClientInfo<IList> ci( c );
@@ -30,25 +30,25 @@ int main(){
 //	t1.join();
 
 	// Create and initiate the state machine
-	StateMachine::StateMachineWrapper statemachine;
+//	StateMachine::StateMachineWrapper statemachine;
 
 	// Function pointer to handle input
-	std::function<void(const std::shared_ptr<std::string>&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
-	bool stopLoop = false;
-
-	// Start reading user intput
-	const std::chrono::milliseconds sleepTime_ms(10);
-	while(!stopLoop)	{
-		std::shared_ptr<std::string> usrInput = std::make_shared<std::string>(Cli::getUserInput());
-		if((*usrInput).compare("/exit") == 0) {
-			stopLoop = true;
-		} else {
-			if(inputHandlerFunc)
-				inputHandlerFunc(usrInput);
-		}
-
-		std::this_thread::sleep_for(sleepTime_ms);
-	}
-	Cli::writeDebugMsg(">> main exit <<");
+//	std::function<void(const std::shared_ptr<std::string>&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
+//	bool stopLoop = false;
+//
+//	// Start reading user intput
+//	const std::chrono::milliseconds sleepTime_ms(10);
+//	while(!stopLoop)	{
+//		std::shared_ptr<std::string> usrInput = std::make_shared<std::string>(Cli::getUserInput());
+//		if((*usrInput).compare("/exit") == 0) {
+//			stopLoop = true;
+//		} else {
+//			if(inputHandlerFunc)
+//				inputHandlerFunc(usrInput);
+//		}
+//
+//		std::this_thread::sleep_for(sleepTime_ms);
+//	}
+//	Cli::writeDebugMsg(">> main exit <<");
 }
 

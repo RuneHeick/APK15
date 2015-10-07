@@ -40,6 +40,16 @@ public:
 		std::cout<<"Exit"<<std::endl;
 		return EventMsg("Rune", "hej");
 	}
+    
+    std::string getSender()
+    {
+        return sender_;
+    }
+    
+    std::string getMessage()
+    {
+        return msg_;
+    }
 private:
     std::string sender_;
     std::string msg_;

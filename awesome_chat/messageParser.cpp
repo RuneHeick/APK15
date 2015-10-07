@@ -65,7 +65,7 @@ EventVariant MessageParser::createEventFromInput(std::string user, std::string c
 
 EventJoin MessageParser::createJoinEvent(std::string usr, std::string room)
 {
-    Cli::writeDebugMsg(usr + " created a Join event created. Target room = " + room);
+    Cli::writeDebugMsg(usr + " created a Join event. Target room = " + room);
     EventJoin e_join(usr, room);
     return e_join;
 }

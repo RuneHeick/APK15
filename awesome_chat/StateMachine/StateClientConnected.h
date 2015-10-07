@@ -11,6 +11,22 @@
 
 namespace StateMachine {
 
+
+struct ClientMessageVisitor : boost::static_visitor<void>
+{
+
+	void operator()(EventMsg& event) const
+	{
+		Cli::writeChatMsg(event.getSender(), event.getMessage());
+	}
+
+	template<typename T>
+	void operator()(T& event) const
+	{
+	}
+
+};
+
 struct StateClientConnected : sc::state<StateClientConnected, StateClient>
 {
 	typedef boost::mpl::list<
@@ -30,6 +46,7 @@ struct StateClientConnected : sc::state<StateClientConnected, StateClient>
 
 			m_client = std::shared_ptr<ClientInfo>(new ClientInfo(socket));
 			disconnect = m_client->disconnected.connect(boost::bind(&StateClientConnected::OnDisconnect, this, _1));
+			MsgRecived = m_client->recivedPacket.connect(boost::bind(&StateClientConnected::OnMsgRecivd, this, _1, _2));
 		}
 		catch(...)
 		{
@@ -44,12 +61,18 @@ struct StateClientConnected : sc::state<StateClientConnected, StateClient>
 	sc::result react( const EvClientDisconnect & );
 	sc::result react( const EvUserInput & );
 private:
-	std::shared_ptr<ClientInfo> m_client;
 	boost::signals2::scoped_connection disconnect;
+	boost::signals2::scoped_connection MsgRecived;
+	std::shared_ptr<ClientInfo> m_client;
 
 	void OnDisconnect(ClientInfo& client)
 	{
 		post_event(EvClientDisconnect());
+	}
+
+	void OnMsgRecivd(ClientInfo& client, EventVariant msg)
+	{
+		boost::apply_visitor(ClientMessageVisitor(), msg);
 	}
 
 };

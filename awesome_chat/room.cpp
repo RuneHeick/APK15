@@ -30,7 +30,7 @@ std::string Room::getName()
 //    }
 //}
 //
-/*
+
 void Room::addClient(std::shared_ptr<ClientInfo> client)
 {
     clients_.push_back(client);
@@ -50,4 +50,4 @@ void Room::removeClient(std::shared_ptr<ClientInfo> client)
         }
     }
 }
-*/
+

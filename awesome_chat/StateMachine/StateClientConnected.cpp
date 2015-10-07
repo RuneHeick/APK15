@@ -14,8 +14,27 @@ sc::result StateClientConnected::react( const EvClientDisconnect & ) {
 }
 
 sc::result StateClientConnected::react( const EvUserInput & ) {
-	//auto event = context<StateClient>().chatClient.ParseUserInput(*context<ChatStateMachine>().usrInput);
-	// todo handle event
+
+
+	EventVariant event;
+	try
+	{
+		event = context<StateClient>().inputParser.createEventFromInput("",*context<ChatStateMachine>().usrInput);
+	}
+	catch(...)
+	{
+		Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Bad Input");
+		return discard_event();
+	}
+
+	try
+	{
+		m_client->Send(event);
+	}
+	catch(...)
+	{
+		return transit<StateClientDisconnected>();
+	}
 
 	return discard_event();
 }

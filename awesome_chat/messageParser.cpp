@@ -7,7 +7,7 @@
 //
 
 #include "messageParser.h"
-
+#include <system_error>
 
 
 MessageParser::MessageParser()
@@ -47,15 +47,18 @@ EventVariant MessageParser::createEventFromInput(std::string user, std::string c
 
 			}else{
 				Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Invalid command!");
+                throw std::system_error(EINVAL, std::generic_category());
 			}
 
 		}catch (const std::out_of_range& oor)
 		{
 			Cli::writeDebugMsg( "Out of range exception");
+            throw;
 		}
 	}else
 	{
 		Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Command to short");
+        throw std::system_error(EINVAL, std::generic_category());
 	}
 
 }

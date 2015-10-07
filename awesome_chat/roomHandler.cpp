@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Michael Rahlff. All rights reserved.
 //
 
-#include "roomHandler.h"
 #include <string>
+#include "roomHandler.h"
 #include "cli.h"
 #include "Network/clientInfo.h"
 

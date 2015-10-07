@@ -26,7 +26,7 @@ void ClientInfo::Send(EventVariant& type)
 	{
 		try
 		{
-		client.write(serilizer.serilize(type));
+			client.write(serilizer.serilize(type));
 		}
 		catch(...)
 		{

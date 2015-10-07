@@ -22,26 +22,25 @@ std::string Room::getName()
 {
     return name_;
 }
-//
-//void Room::broadcastMsg(EventMsg msg)
-//{
-////    EventVariant temp = msg;
-//    std::lock_guard<std::mutex> lock(clients_lock_);
-//    for (auto it = clients_.begin(); it != clients_.end(); it++) {
-////        (*it)->Send(&temp);
-//    }
-//}
+
+
+void Room::broadcastMsg(EventMsg msg)
+{
+    EventVariant temp = msg;
+    std::lock_guard<std::mutex> lock(clients_lock_);
+    for (auto it = clients_.begin(); it != clients_.end(); it++) {
+        (*it)->Send(temp);
+    }
+}
 
 
 void Room::addClient(std::shared_ptr<ClientInfo> client)
 {
-    std::lock_guard<std::mutex> lock(clients_lock_);
     clients_.push_back(client);
 }
 
 void Room::removeClient(std::shared_ptr<ClientInfo> client)
 {
-    std::lock_guard<std::mutex> lock(clients_lock_);
     for (auto it = clients_.begin(); it != clients_.end(); ) {
         
         if ((*it) == client) {

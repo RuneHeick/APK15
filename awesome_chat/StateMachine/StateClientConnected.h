@@ -65,12 +65,12 @@ private:
 	boost::signals2::scoped_connection MsgRecived;
 	std::shared_ptr<ClientInfo> m_client;
 
-	void OnDisconnect(ClientInfo& client)
+	void OnDisconnect(ClientInfo const & client)
 	{
 		post_event(EvClientDisconnect());
 	}
 
-	void OnMsgRecivd(ClientInfo& client, EventVariant msg)
+	void OnMsgRecivd(ClientInfo const & client, EventVariant msg)
 	{
 		boost::apply_visitor(ClientMessageVisitor(), msg);
 	}

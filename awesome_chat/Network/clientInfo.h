@@ -20,8 +20,8 @@
 #include <boost/system/system_error.hpp>
 
 class ClientInfo {
-	typedef  boost::signals2::signal<void (ClientInfo&, EventVariant)> ReciveSignal;
-	typedef  boost::signals2::signal<void (ClientInfo&)> DisconnectSignal;
+	typedef  boost::signals2::signal<void (ClientInfo const &, EventVariant)> ReciveSignal;
+	typedef  boost::signals2::signal<void (ClientInfo const &)> DisconnectSignal;
 public:
 
 	ClientInfo() = default;

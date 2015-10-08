@@ -11,7 +11,30 @@
 #include "room.h"
 #include "roomHandler.h"
 
+struct ServerMessageVisitor; //forward declaration
+
+struct MapEntry {
+	std::shared_ptr<ClientInfo> client_ptr;
+	std::shared_ptr<Room> room_ptr;
+	boost::signals2::connection conReceiveNetworkEvent;
+	boost::signals2::connection conDisconnect;
+	std::shared_ptr<std::string> name_ptr;
+};
+
+//template <typename T>
+class NonDeRefPtr {
+public:
+	NonDeRefPtr(void const * ptr) : m_ptr(ptr) {} ;
+    friend bool operator<( NonDeRefPtr const & lhs, NonDeRefPtr const & rhs ) { return lhs.m_ptr < rhs.m_ptr; } // Needed for map
+    friend bool operator<( NonDeRefPtr const & lhs, void const * rhs ) { return lhs.m_ptr < rhs; }
+    friend bool operator<( void const * lhs, const NonDeRefPtr & rhs ) { return lhs < rhs.m_ptr; }
+
+private:
+	const void * m_ptr;
+};
+
 class ClientHandler {
+	friend ServerMessageVisitor;
 public:
 	ClientHandler();
 
@@ -20,8 +43,26 @@ public:
 	virtual ~ClientHandler();
 
 private:
-	RoomHandler handler;
+	std::mutex mtx;
+	RoomHandler roomHandler;
 
+	std::map<NonDeRefPtr,  MapEntry> m_ClientToRoomMap;
+
+	void OnReceivedNetworkEvent(ClientInfo const & client, EventVariant event);
+	void OnDisconnect(ClientInfo const & client);
+
+	void HandleEvent(EventJoin& event, ClientInfo const & client);
+	void HandleEvent(EventMsg& event, ClientInfo const & client);
+	void HandleEvent(EventWho& event, ClientInfo const & client);
+};
+
+struct ServerMessageVisitor : boost::static_visitor<void>
+{
+	template<typename T>
+	void operator()(ClientHandler& clientHandler, T& event, ClientInfo const & client) const
+	{
+		clientHandler.HandleEvent(event, client);
+	}
 };
 
 #endif /* CLIENTHANDLER_H_ */

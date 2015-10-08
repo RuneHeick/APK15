@@ -47,7 +47,7 @@ void ClientInfo::Disconnect()
 
 void ClientInfo::OnDisconnect()
 {
-	std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);
+	std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock); // todo: http://stackoverflow.com/questions/14920997/should-unique-lock-with-try-to-lock-owns-the-mutex-even-if-lock-fails
 	if(isOpen)
 	{
 		isOpen = false;

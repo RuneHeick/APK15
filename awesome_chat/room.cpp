@@ -27,12 +27,15 @@ std::string Room::getName()
 void Room::broadcastMsg(EventMsg msg)
 {
     EventVariant temp = msg;
-    std::lock_guard<std::mutex> lock(clients_lock_);
+    std::lock_guard<std::mutex> lock(clients_lock_); // todo dette skal gøres mere konsistent. - Formentlig fjernes?
     for (auto it = clients_.begin(); it != clients_.end(); it++) {
         (*it)->Send(temp);
     }
 }
 
+bool Room::isEmpty() {
+	return clients_.empty();
+}
 
 void Room::addClient(std::shared_ptr<ClientInfo> client)
 {

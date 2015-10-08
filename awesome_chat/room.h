@@ -17,8 +17,10 @@
 #include <mutex>
 #include "Events/Events.hpp"
 
+class ClientHandler; // forward declaration
+
 class Room {
-    
+	friend class ClientHandler;
 public:
     Room(std::string name);
     ~Room();
@@ -26,6 +28,7 @@ public:
     void broadcastMsg(EventMsg msg);
     void addClient(std::shared_ptr<ClientInfo>);
     void removeClient(std::shared_ptr<ClientInfo>);
+    bool isEmpty();
 private:
     std::string name_;
     std::vector<std::shared_ptr< ClientInfo > > clients_;

@@ -37,7 +37,7 @@ void ClientHandler::addNewClient(std::shared_ptr<ClientInfo> newClient_ptr)
 
 void ClientHandler::OnReceivedNetworkEvent(ClientInfo const & client, EventVariant event)
 {
-	Cli::writeDebugMsg("Handling events from client");
+	Cli::writeDebugMsg("Handling event from client");
 	auto bound_visitor = std::bind(ServerMessageVisitor(), boost::ref(*this), std::placeholders::_1, boost::ref(client));
 	boost::apply_visitor(bound_visitor, event);
 }

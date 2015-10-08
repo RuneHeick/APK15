@@ -1,6 +1,6 @@
 
 CXX=g++
-CXXFLAGS=-std=c++11 -Wall
+CXXFLAGS=-std=c++11 -Wall -g
 LDFLAGS= -lboost_system -lpthread
 
 BINARY:=awesome_chat

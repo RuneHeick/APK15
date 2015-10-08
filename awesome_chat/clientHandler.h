@@ -21,7 +21,6 @@ struct MapEntry {
 	std::shared_ptr<std::string> name_ptr;
 };
 
-//template <typename T>
 class NonDeRefPtr {
 public:
 	NonDeRefPtr(void const * ptr) : m_ptr(ptr) {} ;

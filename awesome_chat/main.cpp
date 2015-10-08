@@ -1,14 +1,47 @@
 #include <iostream>
 #include <thread>
-#include "messageParser.h"
+#include <stdio.h>
+#include <signal.h>
+#include <execinfo.h>
+//#include "messageParser.h"
 #include "Network/clientInfo.h"
 #include "StateMachine/StateMachineWrapper.h"
 
-int main(){
-//	EventSerilizer test;
-	MessageParser mp;
+void backTrace_sighandler(int sig) {
+	const size_t MAX_TRACE_SIZE = 100;
+	void *trace[MAX_TRACE_SIZE];
+	char **messages = (char **)NULL;
+	size_t trace_size = 0;
 
-    EventVariant var = mp.createEventFromInput("Rune", "/join IHA");
+	// Get backtrace:
+	trace_size = backtrace(trace, MAX_TRACE_SIZE);
+
+	// print
+	printf("Got signal %d\n", sig);
+	messages = backtrace_symbols(trace, trace_size);
+
+	/* skip first stack frame (points here) */
+	printf("[bt] Execution path:\n");
+	for(size_t i = 1;  i<trace_size; ++i)
+	{
+		printf("[bt] #%d %s\n", i, messages[i]);
+
+		char syscom[256];
+		sprintf(syscom,"addr2line %p -e awesome_chat", trace[i]); //last parameter is the name of this app
+		system(syscom);
+	}
+
+	exit(0);
+}
+
+int main(){
+	// Signal handler to catch segmentation faults:
+	signal(SIGSEGV, backTrace_sighandler);
+
+//	EventSerilizer test;
+//	MessageParser mp;
+//
+//    EventVariant var = mp.createEventFromInput("Rune", "/join IHA");
 
 
 //	ClientInfo<IList> ci( c );
@@ -30,25 +63,22 @@ int main(){
 //	t1.join();
 
 	// Create and initiate the state machine
-//	StateMachine::StateMachineWrapper statemachine;
+	StateMachine::StateMachineWrapper statemachine;
 
 	// Function pointer to handle input
-//	std::function<void(const std::shared_ptr<std::string>&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
-//	bool stopLoop = false;
-//
-//	// Start reading user intput
-//	const std::chrono::milliseconds sleepTime_ms(10);
-//	while(!stopLoop)	{
-//		std::shared_ptr<std::string> usrInput = std::make_shared<std::string>(Cli::getUserInput());
-//		if((*usrInput).compare("/exit") == 0) {
-//			stopLoop = true;
-//		} else {
-//			if(inputHandlerFunc)
-//				inputHandlerFunc(usrInput);
-//		}
-//
-//		std::this_thread::sleep_for(sleepTime_ms);
-//	}
-//	Cli::writeDebugMsg(">> main exit <<");
+	std::function<void(const std::shared_ptr<std::string>&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
+	bool stopLoop = false;
+
+	// Start reading user intput
+	while(!stopLoop)	{
+		std::shared_ptr<std::string> usrInput = std::make_shared<std::string>(Cli::getUserInput());
+		if((*usrInput).compare("/exit") == 0) {
+			stopLoop = true;
+		} else {
+			if(inputHandlerFunc)
+				inputHandlerFunc(usrInput);
+		}
+	}
+	Cli::writeDebugMsg(">> main exit <<");
 }
 

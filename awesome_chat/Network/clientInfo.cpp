@@ -22,11 +22,11 @@ ClientInfo::ClientInfo(Simple_Socket clientsocket): client(clientsocket)
 
 void ClientInfo::Send(EventVariant& type)
 {
-	std::lock_guard<std::mutex> lock(socketMutex);
 	if(isOpen)
 	{
 		try
 		{
+			std::lock_guard<std::mutex> lock(socketMutex);
 			client.write(serilizer.serilize(type));
 		}
 		catch(...)
@@ -45,13 +45,13 @@ ClientInfo::~ClientInfo()
 
 void ClientInfo::Disconnect()
 {
+	std::lock_guard<std::mutex> lock(socketMutex);
 	client.disconnect();
 	OnDisconnect();
 }
 
 void ClientInfo::OnDisconnect()
 {
-	std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock); // todo: http://stackoverflow.com/questions/14920997/should-unique-lock-with-try-to-lock-owns-the-mutex-even-if-lock-fails
 	if(isOpen)
 	{
 		isOpen = false;
@@ -61,11 +61,11 @@ void ClientInfo::OnDisconnect()
 
 void ClientInfo::threadRun()
 {
-	while(client.IsOpen())
+	while(client.IsOpen()) // todo Henrik: skal der ikke bruges mutex her?
 	{
 		try
 		{
-			auto packet = client.read();
+			auto packet = client.read(); // todo Henrik: skal der ikke bruges mutex her?
 			if(packet->Size()>0)
 			{
 				EventVariant var = serilizer.deserilize(packet);

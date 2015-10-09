@@ -30,10 +30,7 @@ public:
 
 	void Send(EventVariant& type);
 
-
 	void Disconnect();
-
-
 
 	ReciveSignal recivedPacket;
 	DisconnectSignal  disconnected;
@@ -47,7 +44,6 @@ private:
 
 	Simple_Socket client;
 	bool isOpen = false;
-
 
 	void OnDisconnect();
 	void threadRun();

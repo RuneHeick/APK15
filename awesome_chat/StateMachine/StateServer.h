@@ -12,7 +12,7 @@ namespace StateMachine {
 
 struct StateServer : sc::simple_state<StateServer, ChatStateMachine, StateServerSetup>
 {
-	StateServer() { Cli::writeDebugMsg("Enter StateServer."); }
+	StateServer() { Cli::writeDebugMsg("Enter StateServer."); port = 0; }
 	~StateServer() { Cli::writeDebugMsg("Exit StateServer."); }
 
 	uint port;

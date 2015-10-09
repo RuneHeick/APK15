@@ -66,18 +66,19 @@ int main(){
 	StateMachine::StateMachineWrapper statemachine;
 
 	// Function pointer to handle input
-	std::function<void(const std::shared_ptr<std::string>&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
+	std::function<void(const std::string&)> inputHandlerFunc = std::bind(&StateMachine::StateMachineWrapper::HandleUserInput, &statemachine, std::placeholders::_1);
 	bool stopLoop = false;
 
 	// Start reading user intput
 	while(!stopLoop)	{
-		std::shared_ptr<std::string> usrInput = std::make_shared<std::string>(Cli::getUserInput());
-		if((*usrInput).compare("/exit") == 0) {
+		std::string usrInput = Cli::getUserInput();
+		if(usrInput.compare("/exit") == 0) {
 			stopLoop = true;
 		} else {
 			if(inputHandlerFunc)
 				inputHandlerFunc(usrInput);
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	Cli::writeDebugMsg(">> main exit <<");
 }

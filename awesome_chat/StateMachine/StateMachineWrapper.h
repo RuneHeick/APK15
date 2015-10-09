@@ -15,11 +15,9 @@ class StateMachineWrapper {
 public:
 	StateMachineWrapper();
 
-	void HandleUserInput(const std::shared_ptr<std::string>& str_ptr);
-	void PostEvent(const sc::event_base & evt );
+	void HandleUserInput(const std::string& str_ptr);
 private:
 	ChatStateMachine sm;
-	std::mutex mtx;
 };
 
 } /* namespace StateMachine */

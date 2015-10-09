@@ -11,9 +11,9 @@
 #include "cli.h"
 #include "Network/clientInfo.h"
 
-RoomHandler::RoomHandler(std::string defaultRoomName)
+RoomHandler::RoomHandler(std::string defaultRoomName) : m_DefaultRoomName(defaultRoomName)
 {
-    getRoom(defaultRoomName);
+    getRoom(m_DefaultRoomName);
 }
 
 
@@ -51,17 +51,18 @@ void RoomHandler::addRoom(std::shared_ptr<Room> room)
 
 void RoomHandler::deleteRoom(std::string name_)
 {
-    std::lock_guard<std::mutex> lock(rooms_lock_);
-    for (auto it = rooms_.begin(); it != rooms_.end(); ) {
-        
-        if (name_ == (*it)->getName())
-        {
-            rooms_.erase(it);
-        }else
-        {
-            it++;
-        }
-    }
+	if( !name_.compare(m_DefaultRoomName) ) { // Don't delete the default room.
+		std::lock_guard<std::mutex> lock(rooms_lock_);
+		for (auto it = rooms_.begin(); it != rooms_.end(); ) {
+
+			if (name_ == (*it)->getName()) {
+				rooms_.erase(it); // makes iterator invalid.
+				return;
+			} else  {
+				it++;
+			}
+		}
+	}
 }
 
 

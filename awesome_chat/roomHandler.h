@@ -30,5 +30,6 @@ public:
 private:
     std::vector< std::shared_ptr< Room >> rooms_;
     std::mutex rooms_lock_;
+    const std::string m_DefaultRoomName;
 };
 #endif /* defined(__ac__roomHandler__) */

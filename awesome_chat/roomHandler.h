@@ -21,13 +21,14 @@ public:
     RoomHandler(std::string defaultRoomName);
     ~RoomHandler();
 
-    std::shared_ptr<Room> getRoom(std::string roomName);
+    std::shared_ptr<Room> getRoom(const std::string& roomName);
     void addRoom(std::shared_ptr<Room>);
-    void deleteRoom(std::string);
+    void deleteRoom(const std::string&);
 
     void printAllRooms();
     
 private:
+    void addRoom_unsafe(std::shared_ptr<Room>);
     std::vector< std::shared_ptr< Room >> rooms_;
     std::mutex rooms_lock_;
     const std::string m_DefaultRoomName;

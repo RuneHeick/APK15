@@ -56,14 +56,12 @@ void ClientHandler::OnDisconnect(ClientInfo const & client)
 
 			// Remove client from room and destroy room if it is empty
 			itr->second.room_ptr->removeClient(itr->second.client_ptr); // seconed = MapEntry
-			std::string roomName_str = itr->second.room_ptr->getName();
 			if( itr->second.room_ptr->isEmpty() ) {
-				roomHandler.deleteRoom(roomName_str);
-				Cli::writeDebugMsg("Deleted room " + roomName_str );
+				roomHandler.deleteRoom(itr->second.room_ptr->getName());
 			}
 
 			// Remove client from map:
-			std::string clientName_str(*itr->second.name_ptr);
+			std::string clientName_str = *itr->second.name_ptr;
 			m_ClientToRoomMap.erase(itr);
 			Cli::writeDebugMsg(clientName_str + " disconnected");
 		} else {

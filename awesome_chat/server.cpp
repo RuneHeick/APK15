@@ -12,7 +12,7 @@ server::~server() {
 	try
 	{
 		Simple_Socket CloseConnection;
-		CloseConnection.connect("loalhost", port);
+		CloseConnection.connect("localhost", port);
 		CloseConnection.disconnect();
 		AcceptThread.join();
 	}
@@ -22,6 +22,7 @@ server::~server() {
 
 void server::ThreadAcceptClient()
 {
+	Cli::writeDebugMsg("Accept thread is starting");
 	while(running)
 	{
 		std::shared_ptr<ClientInfo> client;

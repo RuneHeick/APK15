@@ -14,9 +14,9 @@ StateClientGetIp::StateClientGetIp(my_context ctx) : my_base( ctx )
 	Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Set the server ip:");
 }
 
-sc::result StateClientGetIp::react( const EvUserInput & )
+sc::result StateClientGetIp::react( const EvUserInput & event)
 {
-	context<StateClient>().ip = *context<ChatStateMachine>().usrInput;
+	context<StateClient>().ip = event.userInput;
 	return transit<StateClientGetPort>();
 }
 

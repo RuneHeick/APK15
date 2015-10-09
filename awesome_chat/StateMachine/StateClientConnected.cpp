@@ -13,13 +13,13 @@ sc::result StateClientConnected::react( const EvClientDisconnect & ) {
 	return transit<StateClientDisconnected>();
 }
 
-sc::result StateClientConnected::react( const EvUserInput & ) {
+sc::result StateClientConnected::react( const EvUserInput & userEvent ) {
 
 
 	EventVariant event;
 	try
 	{
-		event = context<StateClient>().inputParser.createEventFromInput("",*context<ChatStateMachine>().usrInput);
+		event = context<StateClient>().inputParser.createEventFromInput("",userEvent.userInput);
 	}
 	catch(...)
 	{

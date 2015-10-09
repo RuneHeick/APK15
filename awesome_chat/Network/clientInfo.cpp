@@ -5,6 +5,7 @@
 *      Author: stud
 */
 #include "clientInfo.h"
+#include "../cli.h"
 
 ClientInfo::ClientInfo(Simple_Socket clientsocket): client(clientsocket)
 {
@@ -35,14 +36,17 @@ void ClientInfo::Send(EventVariant& type)
 	}
 }
 
+ClientInfo::~ClientInfo()
+{
+	Disconnect();
+	m_thread.join();
+	Cli::writeDebugMsg("Client Destructed");
+}
+
 void ClientInfo::Disconnect()
 {
-	std::unique_lock<std::mutex> lock(socketMutex, std::try_to_lock);
-	if(isOpen)
-	{
-		isOpen = false;
-		client.disconnect();
-	}
+	client.disconnect();
+	OnDisconnect();
 }
 
 void ClientInfo::OnDisconnect()
@@ -70,11 +74,13 @@ void ClientInfo::threadRun()
 			else
 			{
 				OnDisconnect();
+				break;
 			}
 		}
 		catch(...)
 		{
 			OnDisconnect();
+			break;
 		}
 	}
 }

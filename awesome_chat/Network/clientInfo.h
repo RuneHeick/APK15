@@ -25,7 +25,7 @@ class ClientInfo {
 public:
 
 	ClientInfo() = default;
-
+	~ClientInfo();
 	ClientInfo(Simple_Socket clientsocket);
 
 	void Send(EventVariant& type);

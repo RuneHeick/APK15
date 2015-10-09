@@ -30,13 +30,13 @@ sc::result StateSelectMode::react( const EvClientMode & ) {
 	return transit<StateClient>();
 }
 
-sc::result StateSelectMode::react( const EvUserInput & ) {
-	if((*context<ChatStateMachine>().usrInput).compare("server") == 0) { // 0 = equal
+sc::result StateSelectMode::react( const EvUserInput & event ) {
+	if(event.userInput.compare("server") == 0) { // 0 = equal
 		post_event(EvServerMode());
-	} else if((*context<ChatStateMachine>().usrInput).compare("client") == 0) {
+	} else if(event.userInput.compare("client") == 0) {
 		post_event(EvClientMode());
 	} else {
-		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, std::string("Unknown input: ") + (*context<ChatStateMachine>().usrInput));
+		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, std::string("Unknown input: ") + event.userInput);
 		Cli::writeLogMsg(Cli::LOGTYPE_INFO, std::string("Choose \"server\" or \"client\""));
 	}
 

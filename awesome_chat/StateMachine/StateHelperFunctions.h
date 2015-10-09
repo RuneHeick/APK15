@@ -9,7 +9,7 @@
 
 namespace StateMachine {
 
-extern int ParsePort(std::string& str);
+extern int ParsePort(const std::string& str);
 
 } /* namespace StateMachine */
 

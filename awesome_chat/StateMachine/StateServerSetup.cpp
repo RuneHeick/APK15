@@ -19,10 +19,10 @@ sc::result StateServerSetup::react( const EvSetupDone & ) {
 	return  transit<StateServerRunning>();
 }
 
-sc::result StateServerSetup::react( const EvUserInput & ) {
+sc::result StateServerSetup::react( const EvUserInput & event) {
 	uint16_t port;
 	try {
-		port = ParsePort(*context<ChatStateMachine>().usrInput);
+		port = ParsePort(event.userInput);
 		context<StateServer>().port = port;
 		post_event(EvSetupDone());
 	} catch(...) {

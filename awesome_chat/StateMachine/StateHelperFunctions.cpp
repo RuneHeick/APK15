@@ -11,7 +11,7 @@
 namespace StateMachine {
 
 
-int ParsePort(std::string& str) {
+int ParsePort(const std::string& str) {
 	int port;
 	try {
 		port = std::stoi(str);

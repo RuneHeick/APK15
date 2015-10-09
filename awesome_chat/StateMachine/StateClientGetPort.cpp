@@ -21,11 +21,11 @@ sc::result StateClientGetPort::react( const EvClientConnect & ) {
 	return  transit<StateClientConnected>();
 }
 
-sc::result StateClientGetPort::react( const EvUserInput & )
+sc::result StateClientGetPort::react( const EvUserInput & event)
 {
 	uint16_t port;
 	try {
-		port = ParsePort(*context<ChatStateMachine>().usrInput);
+		port = ParsePort(event.userInput);
 		context<StateClient>().port = port;
 
 		post_event(EvClientConnect());

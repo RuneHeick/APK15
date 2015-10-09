@@ -67,7 +67,7 @@ private:
 
 	void OnDisconnect(ClientInfo const & client)
 	{
-		post_event(EvClientDisconnect());
+		context<ChatStateMachine>().postEvent(EvClientDisconnect());
 	}
 
 	void OnMsgRecivd(ClientInfo const & client, EventVariant msg)

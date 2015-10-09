@@ -114,8 +114,17 @@ void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
 
 void Simple_Socket::disconnect()
 {
-	if(socket && socket->is_open())
+	if(socket)
 	{
-		socket->close();
+		try
+		{
+			if(socket->is_open())
+			{
+				socket->shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+			}
+		}
+		catch(...)
+		{
+		}
 	}
 }

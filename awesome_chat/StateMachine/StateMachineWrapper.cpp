@@ -14,13 +14,8 @@ StateMachineWrapper::StateMachineWrapper() {
 void StateMachineWrapper::HandleUserInput(const std::shared_ptr<std::string>& str_ptr) {
 	std::lock_guard<std::mutex> lock(mtx);
 
-	sm.usrInput = str_ptr;
-	sm.process_event( EvUserInput() );
+	sm.postEvent<EvUserInput>( EvUserInput(*str_ptr) );
 }
 
-void StateMachineWrapper::PostEvent(const sc::event_base & evt ) {
-	std::lock_guard<std::mutex> lock(mtx);
-	sm.process_event(evt);
-}
 
 } /* namespace StateMachine */

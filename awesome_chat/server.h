@@ -12,9 +12,7 @@
 class server {
 public:
 	server(uint port);
-	virtual ~server();
-
-
+	~server();
 
 private:
 	Simple_Server listenServer;

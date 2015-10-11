@@ -35,7 +35,6 @@ public:
 	ReciveSignal recivedPacket;
 	DisconnectSignal  disconnected;
 
-	std::string Name;
 private:
 	EventSerilizer serilizer;
 

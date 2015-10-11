@@ -8,10 +8,13 @@
 
 const std::string DEFAULT_ROOM_NAME("Lobby");
 
-ClientHandler::ClientHandler() : roomHandler(DEFAULT_ROOM_NAME) {
+ClientHandler::ClientHandler() : roomHandler(DEFAULT_ROOM_NAME), m_threadRun(true) {
+	m_thread = std::thread(std::bind(&ClientHandler::RemoveDisconnectedClients,this));
 }
 
 ClientHandler::~ClientHandler() {
+	m_threadRun = false;
+	m_thread.join();
 }
 
 void ClientHandler::addNewClient(std::shared_ptr<ClientInfo> newClient_ptr)
@@ -28,7 +31,7 @@ void ClientHandler::addNewClient(std::shared_ptr<ClientInfo> newClient_ptr)
 		mapEntry.room_ptr = roomHandler.getRoom(DEFAULT_ROOM_NAME);
 		mapEntry.room_ptr->addClient(newClient_ptr);
 		m_ClientToRoomMap.insert( std::make_pair(NonDeRefPtr(newClient_ptr.get()), mapEntry) );
-		Cli::writeDebugMsg("New client added by ClientHandler");
+		Cli::writeDebugMsg( "ClientHandler added new client: " + std::to_string((uint64_t)mapEntry.client_ptr.get()) );
 	} catch (...) {
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Failed to add client");
 		// todo What to do??
@@ -37,7 +40,7 @@ void ClientHandler::addNewClient(std::shared_ptr<ClientInfo> newClient_ptr)
 
 void ClientHandler::OnReceivedNetworkEvent(ClientInfo const & client, EventVariant event)
 {
-	Cli::writeDebugMsg("Handling event from client");
+	Cli::writeDebugMsg( "Handling event from client: " + std::to_string((uint64_t)&client) );
 	auto bound_visitor = std::bind(ServerMessageVisitor(), boost::ref(*this), std::placeholders::_1, boost::ref(client));
 	boost::apply_visitor(bound_visitor, event);
 }
@@ -60,10 +63,14 @@ void ClientHandler::OnDisconnect(ClientInfo const & client)
 				roomHandler.deleteRoom(itr->second.room_ptr->getName());
 			}
 
-			// Remove client from map:
+			// Move client from map to disconnected vector:
+			Cli::writeDebugMsg("Disconnecting client: " + std::to_string((uint64_t)itr->second.client_ptr.get()) + " - " + *itr->second.name_ptr );
+			m_DisconnectedClients.push_back( itr->second.client_ptr ); // Keep a copy of std::shared_ptr<ClientInfo>, because this function is called from ClientInfo and must not destroy here.
+
+			// Remove entry from map:
 			std::string clientName_str = *itr->second.name_ptr;
 			m_ClientToRoomMap.erase(itr);
-			Cli::writeDebugMsg(clientName_str + " disconnected");
+			Cli::writeDebugMsg("Disconnection done");
 		} else {
 			Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable to find client in map");
 		}
@@ -151,5 +158,24 @@ void ClientHandler::HandleEvent(EventWho& event, ClientInfo const & client) {
 		itrRqClient->second.client_ptr->Send(eventOut);
 	} catch (...) {
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Exception: Creating or transmitting who response");
+	}
+}
+
+void ClientHandler::RemoveDisconnectedClients()
+{
+	std::unique_lock<std::mutex> lock(mtx, std::defer_lock);
+	while(m_threadRun)
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		try {
+			lock.lock();
+			while(m_DisconnectedClients.size() > 0)
+			{
+				Cli::writeDebugMsg(std::string("Removing client: ") + std::to_string((uint64_t)m_DisconnectedClients.back().get()) );
+				m_DisconnectedClients.pop_back();
+			}
+			lock.unlock();
+		} catch (...)
+		{ }
 	}
 }

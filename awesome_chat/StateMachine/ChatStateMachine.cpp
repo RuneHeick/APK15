@@ -44,7 +44,7 @@ void ChatStateMachine::dequeue(void)
 		q.pop();
 	}
 
-//	std::unique_lock<std::mutex> lock(m);
+//	std::unique_lock<std::mutex> lock(m, std::defer_lock);
 //	while(running)
 //	{
 //		lock.lock();

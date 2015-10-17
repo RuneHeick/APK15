@@ -12,15 +12,13 @@ namespace StateMachine {
 struct StateSelectMode : sc::state<StateSelectMode, ChatStateMachine>
 {
 	typedef boost::mpl::list<
-			sc::custom_reaction<EvServerMode>,
-			sc::custom_reaction<EvClientMode>,
+			sc::transition<EvServerMode, StateServer>,
+			sc::transition<EvClientMode, StateClient>,
 			sc::custom_reaction<EvUserInput> >reactions;
 
 	StateSelectMode(my_context ctx);
 	~StateSelectMode();
 
-	sc::result react( const EvServerMode & );
-	sc::result react( const EvClientMode & );
 	sc::result react( const EvUserInput & );
 };
 

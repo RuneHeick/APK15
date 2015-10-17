@@ -22,14 +22,6 @@ StateSelectMode::~StateSelectMode() {
 	Cli::writeDebugMsg("Exit SelectMode.");
 }
 
-sc::result StateSelectMode::react( const EvServerMode & ) {
-	return transit<StateServer>();
-}
-
-sc::result StateSelectMode::react( const EvClientMode & ) {
-	return transit<StateClient>();
-}
-
 sc::result StateSelectMode::react( const EvUserInput & event ) {
 	if(event.userInput.compare("server") == 0) { // 0 = equal
 		post_event(EvServerMode());

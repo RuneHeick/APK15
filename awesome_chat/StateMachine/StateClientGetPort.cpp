@@ -31,8 +31,7 @@ sc::result StateClientGetPort::react( const EvUserInput & event)
 		post_event(EvClientConnect());
 	} catch(...) {
 		Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Set the port:");
-
-}
+	}
 
 	return discard_event();
 }

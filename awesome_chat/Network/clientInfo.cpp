@@ -65,7 +65,7 @@ void ClientInfo::threadRun()
 	{
 		try
 		{
-			auto packet = client.read(); // todo Henrik: skal der ikke bruges mutex her?
+			auto packet = client.read(); // todo Henrik: skal der ikke bruges mutex her? -> men det medføre en "deadlock" fordi den blocker for send
 			if(packet->Size()>0)
 			{
 				EventVariant var = serilizer.deserilize(packet);

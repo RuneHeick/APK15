@@ -58,7 +58,7 @@ void ClientHandler::OnDisconnect(ClientInfo const & client)
 			itr->second.conReceiveNetworkEvent.disconnect();
 
 			// Remove client from room and destroy room if it is empty
-			itr->second.room_ptr->removeClient(itr->second.client_ptr); // seconed = MapEntry
+			itr->second.room_ptr->removeClient(itr->second.client_ptr); // second = MapEntry
 			if( itr->second.room_ptr->isEmpty() ) {
 				roomHandler.deleteRoom(itr->second.room_ptr->getName());
 			}

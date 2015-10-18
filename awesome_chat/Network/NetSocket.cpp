@@ -61,37 +61,36 @@ void Simple_Socket::connect(const std::string& ip, uint port)
 
 std::shared_ptr<RawPacket> Simple_Socket::read()
 {
-	  try
-	  {
-		  uint8_t lenbuffer[2];
-		  std::size_t len = socket->receive(boost::asio::buffer(lenbuffer,2));
-		  if(len == 2)
-		  {
-			  std::size_t packetSize = (lenbuffer[0]<<8)+lenbuffer[1];
-			  std::shared_ptr<RawPacket> packet(new RawPacket(packetSize));
-			  std::size_t recivedPlen = 0;
-			  while(recivedPlen < packetSize)
-			  {
-				  recivedPlen += socket->receive(boost::asio::buffer(&packet->Packet()[recivedPlen],packetSize-recivedPlen));
-			  }
+	try
+	{
+		uint8_t lenbuffer[2];
+		std::size_t len = socket->receive(boost::asio::buffer(lenbuffer,2));
+		if(len == 2)
+		{
+			std::size_t packetSize = (lenbuffer[0]<<8)+lenbuffer[1];
+			std::shared_ptr<RawPacket> packet(new RawPacket(packetSize));
+			std::size_t recivedPlen = 0;
+			while(recivedPlen < packetSize)
+			{
+				recivedPlen += socket->receive(boost::asio::buffer(&packet->Packet()[recivedPlen],packetSize-recivedPlen));
+			}
 
-			  return packet;
-		  }
-	  }
-	  catch(boost::system::system_error & e)
-	  {
-		  if(e.code() == boost::asio::error::eof)
-		  {
-			  return std::shared_ptr<RawPacket>(new RawPacket(0));
-		  }
-		  else
-		  {
-			  throw;
-		  }
-	  }
+			return packet;
+		}
+	}
+	catch(boost::system::system_error & e)
+	{
+		if(e.code() == boost::asio::error::eof)
+		{
+			return std::shared_ptr<RawPacket>(new RawPacket(0));
+		}
+		else
+		{
+			throw;
+		}
+	}
 
-	  return std::shared_ptr<RawPacket>(new RawPacket(0));
-
+	return std::shared_ptr<RawPacket>(new RawPacket(0));
 }
 
 void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
@@ -121,6 +120,7 @@ void Simple_Socket::disconnect()
 			if(socket->is_open())
 			{
 				socket->shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+//				socket->close();
 			}
 		}
 		catch(...)

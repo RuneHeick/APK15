@@ -39,19 +39,12 @@ struct StateClientConnected : sc::state<StateClientConnected, StateClient>
 
 	sc::result react( const EvUserInput & );
 private:
-	boost::signals2::scoped_connection disconnect;
-	boost::signals2::scoped_connection MsgRecived;
-	std::shared_ptr<ClientInfo> m_client;
+	boost::signals2::connection disconnect;
+	boost::signals2::connection MsgRecived;
+	std::shared_ptr<ClientInfo> m_clientSocketPtr;
 
-	void OnDisconnect(ClientInfo const & client)
-	{
-		context<ChatStateMachine>().postEvent(EvClientDisconnect());
-	}
-
-	void OnMsgRecivd(ClientInfo const & client, EventVariant msg)
-	{
-		boost::apply_visitor(ClientMessageVisitor(), msg);
-	}
+	void OnDisconnect(ClientInfo const & client);
+	void OnMsgRecivd(ClientInfo const & client, EventVariant msg);
 
 };
 

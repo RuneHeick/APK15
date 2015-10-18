@@ -22,9 +22,9 @@ StateClientConnected::StateClientConnected(my_context ctx) : my_base( ctx )
 
 		socket.connect(ip, port);
 
-		m_client = std::shared_ptr<ClientInfo>(new ClientInfo(socket));
-		disconnect = m_client->disconnected.connect(boost::bind(&StateClientConnected::OnDisconnect, this, _1));
-		MsgRecived = m_client->recivedPacket.connect(boost::bind(&StateClientConnected::OnMsgRecivd, this, _1, _2));
+		m_clientSocketPtr = std::shared_ptr<ClientInfo>(new ClientInfo(socket));
+		disconnect = m_clientSocketPtr->disconnected.connect(boost::bind(&StateClientConnected::OnDisconnect, this, _1));
+		MsgRecived = m_clientSocketPtr->recivedPacket.connect(boost::bind(&StateClientConnected::OnMsgRecivd, this, _1, _2));
 	}
 	catch(boost::system::error_code& e)
 	{
@@ -62,12 +62,24 @@ sc::result StateClientConnected::react( const EvUserInput & userEvent ) {
 	}
 
 	try {
-		m_client->Send(event);
+		m_clientSocketPtr->Send(event);
 	} catch(...) {
 		return transit<StateClientDisconnected>();
 	}
 
 	return discard_event();
+}
+
+void StateClientConnected::OnDisconnect(ClientInfo const & client)
+{
+	disconnect.disconnect();
+	MsgRecived.disconnect();
+	context<ChatStateMachine>().postEvent(EvClientDisconnect());
+}
+
+void StateClientConnected::OnMsgRecivd(ClientInfo const & client, EventVariant msg)
+{
+	boost::apply_visitor(ClientMessageVisitor(), msg);
 }
 
 

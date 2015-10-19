@@ -12,37 +12,20 @@ public:
 
 	EventWho() = default;
 
-    EventWho(std::string usr){
-        user = usr;
-    }
-
     ~EventWho()
     {}
     
 	static std::shared_ptr<RawPacket> ToByte(EventWho& data)
 	{
-		std::cout<<"Enter"<<std::endl;
-		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(3));
-
-		temp->Packet()[0] = 1;
-		temp->Packet()[1] = 2;
-		temp->Packet()[2] = 3;
-
+		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(0));
 		return temp;
 	}
 
 	static EventWho FromByte(uint8_t* packet, std::size_t size)
 	{
-		std::cout<<"Exit"<<std::endl;
-		return EventWho("moo");
+		return EventWho();
 	}
 
-    std::string getUser()
-    {
-        return user;
-    }
-private:
-    std::string user;
     
 };
 #endif

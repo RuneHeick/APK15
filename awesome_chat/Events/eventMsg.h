@@ -25,11 +25,9 @@ public:
 	static std::shared_ptr<RawPacket> ToByte(EventMsg& data)
 	{
 		std::cout<<"Enter"<<std::endl;
-		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(3));
-
-		temp->Packet()[0] = 1;
-		temp->Packet()[1] = 2;
-		temp->Packet()[2] = 3;
+		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(1+data.sender_.length()+1+data.msg_.length())); // name + \0 + msg+ \0
+		std::memcpy(temp->Packet(), data.sender_.c_str(), data.sender_.length()+1);
+		std::memcpy(&temp->Packet()[1+data.sender_.length()], data.msg_.c_str(), data.msg_.length()+1);
 
 		return temp;
 	}
@@ -37,8 +35,10 @@ public:
 
 	static EventMsg FromByte(uint8_t* packet, std::size_t size)
 	{
-		std::cout<<"Exit"<<std::endl;
-		return EventMsg("Rune", "hej");
+		std::string tempname(reinterpret_cast <char*>(packet));
+		std::string tempmsg(reinterpret_cast <char*>(&packet[tempname.length()+1]));
+
+		return EventMsg(tempname,tempmsg);
 	}
     
     std::string getSender()

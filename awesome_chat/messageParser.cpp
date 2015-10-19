@@ -8,6 +8,7 @@
 
 #include "messageParser.h"
 #include <system_error>
+#include <boost/tokenizer.hpp>
 
 
 MessageParser::MessageParser()
@@ -35,15 +36,30 @@ EventVariant MessageParser::createEventFromInput(std::string user, std::string c
 			}else if (command.substr(1,3) == "who")
 			{
 
-				EventVariant temp = createWhoEvent(user);
+				EventVariant temp = createWhoEvent();
 				return temp;
 
 			}else if (command.substr(1,4) == "join")
 			{
-				// 6'th place is the first char of the target room name.
-				// ETC /join myRoom
-				EventVariant temp = createJoinEvent(user, command.substr(6));
-				return temp;
+				boost::char_separator<char> sep(" ");
+				boost::tokenizer<boost::char_separator<char> > tokens(command, sep);
+				auto itr = tokens.begin();
+
+				if( std::distance(itr, tokens.end()) == 3)
+				{
+					itr++;
+					std::string username = *itr;
+					itr++;
+					std::string room = *itr;
+
+					EventVariant temp = createJoinEvent(username, room);
+					return temp;
+				}
+				else
+				{
+					Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Join usage : /join <Name> <Room>");
+					throw std::system_error(EINVAL, std::generic_category());
+				}
 
 			}else{
 				Cli::writeLogMsg(Cli::LOGTYPE_WARNING, "Invalid command!");
@@ -70,10 +86,10 @@ EventJoin MessageParser::createJoinEvent(std::string usr, std::string room)
     return e_join;
 }
 
-EventWho MessageParser::createWhoEvent(std::string usr)
+EventWho MessageParser::createWhoEvent()
 {
-    Cli::writeDebugMsg(usr + " created a Who event.");
-    EventWho e_who(usr);
+    Cli::writeDebugMsg(" created a Who event.");
+    EventWho e_who;
     return e_who;
 }
 

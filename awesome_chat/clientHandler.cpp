@@ -9,7 +9,7 @@
 const std::string DEFAULT_ROOM_NAME("Lobby");
 
 ClientHandler::ClientHandler() : roomHandler(DEFAULT_ROOM_NAME), m_threadRun(true) {
-	m_thread = std::thread(std::bind(&ClientHandler::RemoveDisconnectedClients,this));
+	//m_thread = std::thread([&]() { RemoveDisconnectedClients(); }); 			// std::bind(&ClientHandler::RemoveDisconnectedClients,std::ref(*this)));
 }
 
 ClientHandler::~ClientHandler() {

@@ -26,7 +26,7 @@ public:
 
 private:
     EventJoin createJoinEvent(std::string usr, std::string room);
-    EventWho createWhoEvent(std::string usr);
+    EventWho createWhoEvent();
     EventMsg createMsgEvent(std::string usr, std::string msg);
     
 };

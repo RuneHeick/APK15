@@ -1,5 +1,7 @@
 #include "NetSocket.h"
 
+#include "../cli.h"
+
 void Simple_Server::Lisen(uint port)
 {
 	acceptorPtr = std::shared_ptr<bip::tcp::acceptor>(new bip::tcp::acceptor(io_service, bip::tcp::endpoint(bip::tcp::v4(), port)));
@@ -95,10 +97,14 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 
 void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
 {
+	if(data->Size() > UINT16_MAX ) {
+		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Message to long (max: " + std::to_string(UINT16_MAX) + ") - message discarded!");
+	}else {
 		uint16_t size = data->Size();
-		uint8_t lenbuffer[2] = {static_cast<uint8_t>((size<<8)), static_cast<uint8_t>(size)};
+		uint8_t lenbuffer[2] = {static_cast<uint8_t>((size>>8)), static_cast<uint8_t>(size)};
 		socket->send(boost::asio::buffer(lenbuffer,2));
 		socket->send(boost::asio::buffer(data->Packet(),size));
+	}
 }
 
 void Simple_Socket::disconnect()

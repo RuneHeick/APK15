@@ -5,10 +5,10 @@
 #include "StateSelectMode.h"
 
 #include "StateServer.h"
-#include "StateServerSetup.h" // todo why???
+#include "StateServerSetup.h"
 #include "StateClient.h"
-#include "StateClientDisconnected.h" // Todo why???
-#include "StateClientGetIp.h" // todo why???
+#include "StateClientDisconnected.h"
+#include "StateClientGetIp.h"
 
 namespace StateMachine {
 

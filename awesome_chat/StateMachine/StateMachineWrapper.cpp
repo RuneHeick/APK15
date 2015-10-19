@@ -3,7 +3,7 @@
  */
 
 #include "StateMachineWrapper.h"
-#include "StateSelectMode.h" // todo why??
+#include "StateSelectMode.h"
 
 namespace StateMachine {
 

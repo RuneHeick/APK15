@@ -5,7 +5,7 @@
 #include "StateClientConnected.h"
 
 #include "StateClientDisconnected.h"
-#include "StateClientGetIp.h" // todo why is this needed?
+#include "StateClientGetIp.h"
 
 namespace StateMachine {
 

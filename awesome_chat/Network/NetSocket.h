@@ -22,6 +22,7 @@ class Simple_Socket
 {
 public:
 	Simple_Socket(){};
+	~Simple_Socket(){};
 	Simple_Socket(std::shared_ptr<bip::tcp::socket> soc):socket(soc){};
 
 	Simple_Socket& operator=(Simple_Socket other);
@@ -34,6 +35,7 @@ public:
 	bool IsOpen() {if(socket) return socket->is_open(); else return false;}
 
 private:
+	std::shared_ptr<boost::asio::io_service> ioService;
 	std::shared_ptr<bip::tcp::socket> socket;
 };
 
@@ -47,8 +49,8 @@ public:
 	~Simple_Server();
 
 private:
-	std::shared_ptr<bip::tcp::acceptor> acceptorPtr;
 	boost::asio::io_service io_service;
+	std::shared_ptr<bip::tcp::acceptor> acceptorPtr;
 };
 
 

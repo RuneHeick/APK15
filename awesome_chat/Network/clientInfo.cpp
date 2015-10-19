@@ -83,4 +83,5 @@ void ClientInfo::threadRun()
 			break;
 		}
 	}
+	Cli::writeDebugMsg("ClientInfo Thread is stopped");
 }

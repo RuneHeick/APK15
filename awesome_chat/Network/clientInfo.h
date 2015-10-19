@@ -36,12 +36,12 @@ public:
 	DisconnectSignal  disconnected;
 
 private:
+	Simple_Socket client;
 	EventSerilizer serilizer;
 
 	std::mutex socketMutex;
 	std::thread m_thread;
 
-	Simple_Socket client;
 	bool isOpen = false;
 
 	void OnDisconnect();

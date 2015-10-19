@@ -28,35 +28,35 @@ Simple_Socket Simple_Server::Accept()
 Simple_Socket& Simple_Socket::operator=(Simple_Socket other)
 {
 	socket = other.socket;
+	ioService = other.ioService;
 	return *this;
 }
 
 Simple_Socket::Simple_Socket(const Simple_Socket& other)
 {
 	socket = other.socket;
+	ioService = other.ioService;
 }
 
 void Simple_Socket::connect(const std::string& ip, uint port)
 {
-
-	boost::asio::io_service io_service;
-	bip::tcp::resolver resolver(io_service);
-	bip::tcp::resolver::query query(ip, boost::lexical_cast<std::string>(port));
-
-	bip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-	bip::tcp::resolver::iterator end;
-
-
-	socket = std::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(io_service));
-	boost::system::error_code error = boost::asio::error::host_not_found;
-	while (error && endpoint_iterator != end)
+	try
 	{
-	  socket->close();
-	  socket->connect(*endpoint_iterator++, error);
-	}
+		ioService = std::shared_ptr<boost::asio::io_service>( new boost::asio::io_service());
+		bip::tcp::resolver resolver(*ioService);
+		bip::tcp::resolver::query query(ip, boost::lexical_cast<std::string>(port));
 
-	if (error)
-	  throw boost::system::system_error(error);
+		bip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+		bip::tcp::resolver::iterator end;
+
+		socket = std::shared_ptr<bip::tcp::socket>(new bip::tcp::socket(*ioService));
+
+		boost::asio::connect(*socket, endpoint_iterator);
+	}
+	catch(...)
+	{
+		throw boost::system::system_error(boost::asio::error::host_not_found);
+	}
 }
 
 std::shared_ptr<RawPacket> Simple_Socket::read()
@@ -95,36 +95,16 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 
 void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
 {
-
-	try
-	{
-		uint8_t lenbuffer[2] = {static_cast<uint8_t>((data->Size()<<8)), static_cast<uint8_t>(data->Size())};
+		uint16_t size = data->Size();
+		uint8_t lenbuffer[2] = {static_cast<uint8_t>((size<<8)), static_cast<uint8_t>(size)};
 		socket->send(boost::asio::buffer(lenbuffer,2));
-		socket->send(boost::asio::buffer(data->Packet(),data->Size()));
-	}
-	catch(boost::system::system_error & e)
-	{
-	  if(e.code() != boost::asio::error::eof)
-	  {
-		  throw;
-	  }
-	}
+		socket->send(boost::asio::buffer(data->Packet(),size));
 }
 
 void Simple_Socket::disconnect()
 {
 	if(socket)
 	{
-		try
-		{
-			if(socket->is_open())
-			{
-				socket->shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-//				socket->close();
-			}
-		}
-		catch(...)
-		{
-		}
+		socket = std::shared_ptr<bip::tcp::socket>();
 	}
 }

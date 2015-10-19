@@ -17,16 +17,13 @@ public:
         targetRoom_ = room;
     }
 
-    ~EventJoin()
-    {
-
-    }
+    ~EventJoin() = default;
     
 	static std::shared_ptr<RawPacket> ToByte(EventJoin& data)
 	{
 		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(1+data.userName_.length()+1+data.targetRoom_.length())); // name + \0 + msg+ \0
-		std::memcpy(temp->Packet(), data.userName_.c_str(), data.userName_.length()+1);
-		std::memcpy(&temp->Packet()[1+data.userName_.length()], data.targetRoom_.c_str(), data.targetRoom_.length()+1);
+		std::memcpy(&(*temp)[0], data.userName_.c_str(), data.userName_.length()+1);
+		std::memcpy(&(*temp)[1+data.userName_.length()], data.targetRoom_.c_str(), data.targetRoom_.length()+1);
 
 		return temp;
 	}
@@ -48,6 +45,7 @@ public:
     {
         return targetRoom_;
     }
+
 private:
     std::string userName_;
     std::string targetRoom_;

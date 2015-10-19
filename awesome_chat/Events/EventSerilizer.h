@@ -22,9 +22,9 @@ struct SerilizeVisitor : boost::static_visitor< std::shared_ptr<RawPacket> >
 	std::shared_ptr<RawPacket> operator()(T& event) const
 	{
 		std::shared_ptr<RawPacket> EventPacket = T::ToByte(event);
-		std::shared_ptr<RawPacket> NewPacket = std::shared_ptr<RawPacket>(new RawPacket(EventPacket->Size()+1));
-	    memcpy(&NewPacket->Packet()[1],EventPacket->Packet(), EventPacket->Size());
-	    NewPacket->Packet()[0] = (char)Event_ID<IList, T>::value;
+		std::shared_ptr<RawPacket> NewPacket = std::shared_ptr<RawPacket>(new RawPacket(EventPacket->size()+1));
+		std::copy(EventPacket->begin(),EventPacket->end(),++(NewPacket->begin()));
+	    (*NewPacket)[0] = (char)Event_ID<IList, T>::value;
 	    return NewPacket;
 	}
 };

@@ -10,9 +10,9 @@ struct MetaDeserilizer
 	typedef typename Begin::type currentType;
 	static EventVariant deserilize(std::shared_ptr<RawPacket>  packet)
 	{
-		if(packet->Packet()[0] == ID)
+		if((*packet)[0] == ID)
 		{
-			EventVariant var = currentType::FromByte(&packet->Packet()[1], packet->Size()-1);
+			EventVariant var = currentType::FromByte(&(*packet)[1], packet->size()-1);
 			return var;
 		}
 		else

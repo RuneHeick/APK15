@@ -74,7 +74,7 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 			std::size_t recivedPlen = 0;
 			while(recivedPlen < packetSize)
 			{
-				recivedPlen += socket->receive(boost::asio::buffer(&packet->Packet()[recivedPlen],packetSize-recivedPlen));
+				recivedPlen += socket->receive(boost::asio::buffer(&(*packet)[recivedPlen],packetSize-recivedPlen));
 			}
 
 			return packet;
@@ -97,13 +97,13 @@ std::shared_ptr<RawPacket> Simple_Socket::read()
 
 void Simple_Socket::write(const std::shared_ptr<RawPacket>& data)
 {
-	if(data->Size() > UINT16_MAX ) {
+	if(data->size() > UINT16_MAX ) {
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Message to long (max: " + std::to_string(UINT16_MAX) + ") - message discarded!");
 	}else {
-		uint16_t size = data->Size();
+		uint16_t size = data->size();
 		uint8_t lenbuffer[2] = {static_cast<uint8_t>((size>>8)), static_cast<uint8_t>(size)};
 		socket->send(boost::asio::buffer(lenbuffer,2));
-		socket->send(boost::asio::buffer(data->Packet(),size));
+		socket->send(boost::asio::buffer(&(*data)[0],size));
 	}
 }
 

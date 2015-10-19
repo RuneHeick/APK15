@@ -26,8 +26,8 @@ public:
 	{
 		std::cout<<"Enter"<<std::endl;
 		std::shared_ptr<RawPacket> temp = std::shared_ptr<RawPacket>(new RawPacket(1+data.sender_.length()+1+data.msg_.length())); // name + \0 + msg+ \0
-		std::memcpy(temp->Packet(), data.sender_.c_str(), data.sender_.length()+1);
-		std::memcpy(&temp->Packet()[1+data.sender_.length()], data.msg_.c_str(), data.msg_.length()+1);
+		std::memcpy(&(*temp)[0], data.sender_.c_str(), data.sender_.length()+1);
+		std::memcpy(&(*temp)[1+data.sender_.length()], data.msg_.c_str(), data.msg_.length()+1);
 
 		return temp;
 	}

@@ -23,6 +23,7 @@ class Room {
 	friend class ClientHandler;
 public:
     Room(std::string name);
+    ~Room(){};
     std::string getName();
     void broadcastMsg(EventMsg msg);
     void addClient(std::shared_ptr<ClientInfo>);

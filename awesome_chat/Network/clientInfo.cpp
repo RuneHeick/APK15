@@ -66,7 +66,7 @@ void ClientInfo::threadRun()
 		try
 		{
 			auto packet = client.read();
-			if(packet->Size()>0)
+			if(packet->size()>0)
 			{
 				EventVariant var = serilizer.deserilize(packet);
 				recivedPacket(*this, var);

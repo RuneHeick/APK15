@@ -61,11 +61,11 @@ void ClientInfo::OnDisconnect()
 
 void ClientInfo::threadRun()
 {
-	while(client.IsOpen()) // todo Henrik: skal der ikke bruges mutex her?
+	while(client.IsOpen())
 	{
 		try
 		{
-			auto packet = client.read(); // todo Henrik: skal der ikke bruges mutex her? -> men det medføre en "deadlock" fordi den blocker for send
+			auto packet = client.read();
 			if(packet->Size()>0)
 			{
 				EventVariant var = serilizer.deserilize(packet);

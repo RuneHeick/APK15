@@ -13,11 +13,6 @@ Room::Room(std::string name)
     name_ = name;
 }
 
-Room::~Room()
-{
-    
-}
-
 std::string Room::getName()
 {
     return name_;
@@ -27,7 +22,6 @@ std::string Room::getName()
 void Room::broadcastMsg(EventMsg msg)
 {
     EventVariant temp = msg;
-    std::lock_guard<std::mutex> lock(clients_lock_); // todo dette skal gøres mere konsistent. - Formentlig fjernes?
     for (auto it = clients_.begin(); it != clients_.end(); it++) {
         (*it)->Send(temp);
     }

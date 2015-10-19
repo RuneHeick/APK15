@@ -23,7 +23,6 @@ class Room {
 	friend class ClientHandler;
 public:
     Room(std::string name);
-    ~Room();
     std::string getName();
     void broadcastMsg(EventMsg msg);
     void addClient(std::shared_ptr<ClientInfo>);
@@ -32,7 +31,6 @@ public:
 private:
     std::string name_;
     std::vector<std::shared_ptr< ClientInfo > > clients_;
-    std::mutex clients_lock_;
 };
 
 #endif /* defined(__ac__room__) */

@@ -20,7 +20,7 @@ namespace mpl = boost::mpl;
 
 // A type map. Implem #N of type Key is type (default: void)
 
-template <typename Key, int N>
+template <int N>
 struct Implem
 {
   public:
@@ -30,28 +30,24 @@ struct Implem
 // Type vector building functions
 // void, the default type, is used to stop the recursion
 
-template <typename Key, int N = 1>
+template <int N = 1>
 struct ImplemToList;
 
-template <typename Key, typename Item, int N>
+template <typename Item, int N>
 struct ImplemListItem
 {
   public:
-    typedef typename mpl::push_front<typename ImplemToList<Key, N + 1>::type, Item>::type type;
+    typedef typename mpl::push_front<typename ImplemToList<N + 1>::type, Item>::type type;
 };
 
-template <typename Key, int N>
+template <int N>
 struct ImplemToList
 {
   public:
-    typedef typename Implem<Key, N>::type item;
-    typedef typename mpl::eval_if<boost::is_same<item, void>, mpl::identity<mpl::vector<> >,ImplemListItem<Key, item, N> >::type type;
+    typedef typename Implem<N>::type item;
+    typedef typename mpl::eval_if<boost::is_same<item, void>, mpl::identity<mpl::vector<> >,ImplemListItem<item, N> >::type type;
 };
 
-
-class Interface
-{
-};
 
 struct StartCount
 {
@@ -62,7 +58,7 @@ struct StartCount
 class Implem2;\
 \
 template <>\
-struct Implem<Interface, __COUNTER__ - StartCount::value>\
+struct Implem< __COUNTER__ - StartCount::value>\
 {\
   public:\
     typedef Implem2 type;\

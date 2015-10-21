@@ -27,6 +27,7 @@ struct StateServerRunning : sc::state<StateServerRunning, StateServer>
 			post_event(EvError());
 		}
 
+		Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Server up and running.");
 	}
 	~StateServerRunning() { Cli::writeDebugMsg("Exit StateServerRunning."); }
 

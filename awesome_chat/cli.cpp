@@ -67,7 +67,7 @@ int Cli::getUserInt(const std::string requestPrint)
 
 void Cli::writeDebugMsg(const std::string msg)
 {
-    writeLogMsg("DEBUG", msg);
+    //writeLogMsg("DEBUG", msg);
 }
 
 void Cli::writeLogMsg(const std::string logtype, const std::string msg)

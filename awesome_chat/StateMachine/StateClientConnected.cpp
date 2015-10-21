@@ -45,6 +45,10 @@ StateClientConnected::StateClientConnected(my_context ctx) : my_base( ctx )
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable to connect to server (ip: "+context<StateClient>().ip+" port: "+std::to_string(context<StateClient>().port)+" )");
 		post_event(EvClientDisconnect());
 	}
+	else
+	{
+		Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Connected to server");
+	}
 }
 
 StateClientConnected::~StateClientConnected()
@@ -74,6 +78,7 @@ void StateClientConnected::OnDisconnect(ClientInfo const & client)
 {
 	disconnect.disconnect();
 	MsgRecived.disconnect();
+	Cli::writeLogMsg(Cli::LOGTYPE_INFO, "Lost connection to server");
 	context<ChatStateMachine>().postEvent(EvClientDisconnect());
 }
 

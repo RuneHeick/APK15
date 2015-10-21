@@ -47,12 +47,12 @@ private:
 	std::map<NonDeRefPtr,  MapEntry> m_ClientToRoomMap;
 	std::vector<std::shared_ptr<ClientInfo>> m_DisconnectedClients;
 
-	void OnReceivedNetworkEvent(ClientInfo const & client, EventVariant event);
+	void OnReceivedNetworkEvent(ClientInfo & client, EventVariant event);
 	void OnDisconnect(ClientInfo const & client);
 
-	void HandleEvent(EventJoin& event, ClientInfo const & client);
-	void HandleEvent(EventMsg& event, ClientInfo const & client);
-	void HandleEvent(EventWho& event, ClientInfo const & client);
+	void HandleEvent(EventJoin& event, ClientInfo & client);
+	void HandleEvent(EventMsg& event, ClientInfo & client);
+	void HandleEvent(EventWho& event, ClientInfo & client);
 
 	void RemoveDisconnectedClients(); // thread function
 	std::thread m_thread;
@@ -62,7 +62,7 @@ private:
 struct ServerMessageVisitor : boost::static_visitor<void>
 {
 	template<typename T>
-	void operator()(ClientHandler& clientHandler, T& event, ClientInfo const & client) const
+	void operator()(ClientHandler& clientHandler, T& event, ClientInfo & client) const
 	{
 		clientHandler.HandleEvent(event, client);
 	}

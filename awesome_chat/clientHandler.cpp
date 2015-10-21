@@ -34,11 +34,11 @@ void ClientHandler::addNewClient(std::shared_ptr<ClientInfo> newClient_ptr)
 		Cli::writeDebugMsg( "ClientHandler added new client: " + std::to_string((uint64_t)mapEntry.client_ptr.get()) );
 	} catch (...) {
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Failed to add client");
-		// todo What to do??
+		newClient_ptr->Disconnect();
 	}
 }
 
-void ClientHandler::OnReceivedNetworkEvent(ClientInfo const & client, EventVariant event)
+void ClientHandler::OnReceivedNetworkEvent(ClientInfo & client, EventVariant event)
 {
 	Cli::writeDebugMsg( "Handling event from client: " + std::to_string((uint64_t)&client) );
 	auto bound_visitor = std::bind(ServerMessageVisitor(), boost::ref(*this), std::placeholders::_1, boost::ref(client));
@@ -79,7 +79,7 @@ void ClientHandler::OnDisconnect(ClientInfo const & client)
 	}
 }
 
-void ClientHandler::HandleEvent(EventJoin& event, ClientInfo const & client) {
+void ClientHandler::HandleEvent(EventJoin& event, ClientInfo& client) {
 	Cli::writeDebugMsg("Handling join event");
 	std::lock_guard<std::mutex> lock(mtx);
 
@@ -87,7 +87,7 @@ void ClientHandler::HandleEvent(EventJoin& event, ClientInfo const & client) {
 	auto itr = m_ClientToRoomMap.find( (void*)&client );
 	if(itr == m_ClientToRoomMap.end()) { // Make sure it returned something
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable find client in map");
-		// todo skal der kastes en exception her?
+		client.Disconnect();
 		return;
 	}
 
@@ -111,7 +111,7 @@ void ClientHandler::HandleEvent(EventJoin& event, ClientInfo const & client) {
 	}
 }
 
-void ClientHandler::HandleEvent(EventMsg& event, ClientInfo const & client) {
+void ClientHandler::HandleEvent(EventMsg& event, ClientInfo & client) {
 	Cli::writeDebugMsg("Handling Msg event");
 	std::lock_guard<std::mutex> lock(mtx);
 
@@ -126,19 +126,19 @@ void ClientHandler::HandleEvent(EventMsg& event, ClientInfo const & client) {
 		}
 	} else {
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable to find client in map");
-		// todo skal der kastes en exception her?
+		client.Disconnect();
 	}
 }
 
-void ClientHandler::HandleEvent(EventWho& event, ClientInfo const & client) {
-	// todo try catch
+void ClientHandler::HandleEvent(EventWho& event, ClientInfo & client) {
+
 	Cli::writeDebugMsg("Handling Who event");
 	std::lock_guard<std::mutex> lock(mtx);
 
 	auto itrRqClient = m_ClientToRoomMap.find( (void*)&client ); // Find iterator for requesting client
 	if(itrRqClient == m_ClientToRoomMap.end()) { // Make sure it returned something
 		Cli::writeLogMsg(Cli::LOGTYPE_ERROR, "Unable find client in map");
-		// todo skal der kastes en exception her?
+		client.Disconnect();
 		return;
 	}
 
